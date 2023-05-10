@@ -1,5 +1,6 @@
 numpy==1.24.1
 pymongo==4.3.3
 pytest==7.2.0
+ruff==0.0.265
 pytest-cov==4.0.0
 coverage==7.2.5

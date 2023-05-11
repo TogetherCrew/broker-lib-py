@@ -4,3 +4,4 @@ pytest==7.2.0
 ruff==0.0.265
 pytest-cov==4.0.0
 coverage==7.2.5
+tc-messageBroker==0.0.1

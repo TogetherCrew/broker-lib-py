@@ -23,6 +23,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          ## installing tc-messageBroker python library
+          pip install .
           pip install -r requirements.txt
       - name: Lint with ruff
         run: |

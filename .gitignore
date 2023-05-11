@@ -2,3 +2,8 @@
 .vscode
 __pycache__/
 *.pyc
+TC-msg-broker
+*.egg-info/
+*.egg
+eggs/
+build/

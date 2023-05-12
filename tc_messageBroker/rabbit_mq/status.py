@@ -1,7 +1,4 @@
-from enum import Enum
-
-
-class Status(Enum):
+class Status:
     PENDING = 0
     IN_PROGRESS = 1
     SUCCESS = 2

@@ -5,7 +5,5 @@ class TC_message_broker:
     def __new__(cls, broker_url: str):
         ## making it singleton
         if not hasattr(cls, "instance"):
-            cls.instance = super(
-                TC_message_broker, 
-                cls).__new__(cls)
+            cls.instance = super(TC_message_broker, cls).__new__(cls)
         return cls.instance

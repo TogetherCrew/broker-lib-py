@@ -6,3 +6,4 @@ def test_enum_stats():
     assert Status.IN_PROGRESS.value == 1
     assert Status.SUCCESS.value == 2
     assert Status.FAILED.value == 3
+    assert Status.CANCELLED.value == 4

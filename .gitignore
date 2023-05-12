@@ -7,3 +7,5 @@ TC-msg-broker
 *.egg
 eggs/
 build/
+TC-broker/
+main.ipynb

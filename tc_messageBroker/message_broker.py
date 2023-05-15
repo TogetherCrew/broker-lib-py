@@ -35,7 +35,7 @@ class RabbitMQ:
         consume_options : dict
             additional arguments for basic_consume method
             default is `None`
-        
+
         Returns:
         ---------
         is_successful : bool
@@ -49,7 +49,8 @@ class RabbitMQ:
             )
             self.channel = self.connection.channel()
 
-            # make sure that the channel is created, if not this statement will create it
+            # make sure that the channel is created, 
+            # if not this statement will create it
             self.channel.queue_declare(queue=queue_name)
 
             self.channel.basic_consume(
@@ -89,20 +90,20 @@ class RabbitMQ:
         else:
             self.event_function[event]
             self.channel.basic_ack(delivery_tag=method.delivery_tag)
-        
-        
+
     def consume(self, queue_name: str, consume_options: dict = None):
         """
         set consuming events from a queue
         """
         self.channel.basic_consume(
-            queue=queue_name, 
+            queue=queue_name,
             on_message_callback=self._consume_callback,
-            arguments=consume_options
+            arguments=consume_options,
         )
-        
 
-    def publish(self, queue_name: str, event: str, content: dict, options: any = None) -> None:
+    def publish(
+        self, queue_name: str, event: str, content: dict, options: any = None
+    ) -> None:
         """
         Publish a specific message to a specific queue directly
 
@@ -238,16 +239,12 @@ class RabbitMQ:
             body=data,
             properties=options,
         )
+
     def _define_data(self, event, content):
         """
         define seriazable data to use
         """
-        data = {
-            "event": event, 
-            "date": str(datetime.now()), 
-            "content": content
-        }
+        data = {"event": event, "date": str(datetime.now()), "content": content}
 
         data_json = json.dumps(data)
         return data_json
-

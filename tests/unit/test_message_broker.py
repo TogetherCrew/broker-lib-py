@@ -31,34 +31,32 @@ def test_tc_message_broker_singleton():
     assert messageBroker.broker_url == url_new
     assert messageBroker2.broker_url == url_new
 
+
 def test_connection_rabbit_mq():
-    broker_url = 'localhost'
+    broker_url = "localhost"
 
     rabbit_mq = RabbitMQ(broker_url=broker_url)
-    success = rabbit_mq.connect('test_queue')
+    success = rabbit_mq.connect("test_queue")
     rabbit_mq.connection.close()
 
-    assert success == True
-    
+    assert success is True
+
 
 def test_consume_publish_no_event():
     """
     consume an event which does not exists
     """
-    broker_url = 'localhost'
+    broker_url = "localhost"
 
     rabbit_mq = RabbitMQ(broker_url=broker_url)
-    success = rabbit_mq.connect(Queue.DISCORD_ANALYZER)
+    rabbit_mq.connect(Queue.DISCORD_ANALYZER)
 
-    content = {
-        'content': 'content_analyzer_publish'
-    }
-
+    content = {"content": "content_analyzer_publish"}
 
     rabbit_mq.publish(
-        queue_name=Queue.DISCORD_ANALYZER, 
-        event=Event.DISCORD_ANALYZER.RUN, 
-        content=content
+        queue_name=Queue.DISCORD_ANALYZER,
+        event=Event.DISCORD_ANALYZER.RUN,
+        content=content,
     )
     rabbit_mq.consume(Queue.DISCORD_ANALYZER)
     rabbit_mq.connection.close()
@@ -76,7 +74,7 @@ def test_consume_publish_no_event():
 #     content = {
 #         'content': 'content_analyzer_publish'
 #     }
-    
+
 #     global_var = None
 
 #     def event_function():
@@ -87,12 +85,18 @@ def test_consume_publish_no_event():
 #         # rabbit_mq.channel.stop_consuming(consumer_tag='SAMPLE')
 
 #     rabbit_mq.publish(
-#         Queue.DISCORD_ANALYZER, 
-#         Event.DISCORD_ANALYZER.RUN, 
+#         Queue.DISCORD_ANALYZER,
+#         Event.DISCORD_ANALYZER.RUN,
 #         content=content
 #     )
-#     # rabbit_mq.consume(Queue.DISCORD_ANALYZER, consume_options={'consumer_tag': 'SAMPLE'})
-#     rabbit_mq.channel.basic_consume(Queue.DISCORD_ANALYZER, rabbit_mq._consume_callback)
+#     rabbit_mq.consume(
+#         Queue.DISCORD_ANALYZER, 
+#         consume_options={'consumer_tag': 'SAMPLE'}
+#     )
+#    rabbit_mq.channel.basic_consume(
+#        Queue.DISCORD_ANALYZER, 
+#        rabbit_mq._consume_callback
+#    )
 
 #     rabbit_mq.channel.start_consuming()
 

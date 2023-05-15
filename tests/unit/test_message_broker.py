@@ -1,6 +1,7 @@
 from tc_messageBroker import RabbitMQ
 from tc_messageBroker.rabbit_mq.queue import Queue
 from tc_messageBroker.rabbit_mq.event import Event
+import pytest
 
 
 def test_tc_message_broker_default_mode():
@@ -32,6 +33,9 @@ def test_tc_message_broker_singleton():
     assert messageBroker2.broker_url == url_new
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
+)
 def test_connection_rabbit_mq():
     broker_url = "localhost"
 
@@ -42,6 +46,9 @@ def test_connection_rabbit_mq():
     assert success is True
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
+)
 def test_consume_publish_no_event():
     """
     consume an event which does not exists
@@ -62,44 +69,39 @@ def test_consume_publish_no_event():
     rabbit_mq.connection.close()
 
 
-# def test_consume_publish_with_event():
-#     """
-#     consume an event which does not exists
-#     """
-#     broker_url = 'localhost'
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (start_consuming woudn't stop and test wouldn't end)" # flake8: noqa
+) 
+def test_consume_publish_with_event():
+    """
+    consume an event which does not exists
+    """
+    broker_url = "localhost"
 
-#     rabbit_mq = RabbitMQ(broker_url=broker_url)
-#     rabbit_mq.connect(Queue.DISCORD_ANALYZER)
+    rabbit_mq = RabbitMQ(broker_url=broker_url)
+    rabbit_mq.connect(Queue.DISCORD_ANALYZER)
 
-#     content = {
-#         'content': 'content_analyzer_publish'
-#     }
+    content = {"content": "content_analyzer_publish"}
 
-#     global_var = None
+    global_var = None
 
-#     def event_function():
-#         global global_var
-#         global rabbit_mq
-#         global_var = True
+    def event_function():
+        global global_var
+        global rabbit_mq
+        global_var = True
 
-#         # rabbit_mq.channel.stop_consuming(consumer_tag='SAMPLE')
+        # rabbit_mq.channel.stop_consuming(consumer_tag='SAMPLE')
 
-#     rabbit_mq.publish(
-#         Queue.DISCORD_ANALYZER,
-#         Event.DISCORD_ANALYZER.RUN,
-#         content=content
-#     )
-#     rabbit_mq.consume(
-#         Queue.DISCORD_ANALYZER, 
-#         consume_options={'consumer_tag': 'SAMPLE'}
-#     )
-#    rabbit_mq.channel.basic_consume(
-#        Queue.DISCORD_ANALYZER, 
-#        rabbit_mq._consume_callback
-#    )
+    rabbit_mq.publish(
+        Queue.DISCORD_ANALYZER, Event.DISCORD_ANALYZER.RUN, content=content
+    )
+    rabbit_mq.consume(
+        Queue.DISCORD_ANALYZER, consume_options={"consumer_tag": "SAMPLE"}
+    )
+    rabbit_mq.channel.basic_consume(Queue.DISCORD_ANALYZER, rabbit_mq._consume_callback)
 
-#     rabbit_mq.channel.start_consuming()
+    rabbit_mq.channel.start_consuming()
 
-#     rabbit_mq.connection.close()
+    rabbit_mq.connection.close()
 
-#     assert global_var == True
+    assert global_var is True

@@ -3,3 +3,14 @@
 
 # tc-messageBrokerPython
 RabbitMQ message broker library for python
+
+## Installation
+To install the library first clone the code and then follow the instruction below
+- `pip install .`
+- `pip install -r requirements.txt`
+
+## Usage
+In your project, you could use this library by importing `tc_messageBroker` and to load sub-modules just separate it by dot. For example
+- `from tc_messageBroker import RabbitMQ`
+- `from tc_messageBroker.rabbit_mq.queue import Queue`
+- `from tc_messageBroker.rabbit_mq.event import Event`

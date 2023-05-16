@@ -14,3 +14,5 @@ In your project, you could use this library by importing `tc_messageBroker` and 
 - `from tc_messageBroker import RabbitMQ`
 - `from tc_messageBroker.rabbit_mq.queue import Queue`
 - `from tc_messageBroker.rabbit_mq.event import Event`
+
+You can find examples under [example](example) directory.

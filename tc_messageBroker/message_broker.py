@@ -148,9 +148,7 @@ class RabbitMQ:
         self,
         name: str,
         type: str,
-        durable: bool = True,
-        auto_delete: bool = False,
-        options: any = None,
+        **kwargs,
     ) -> None:
         """
         create an exchange point with a specific type
@@ -163,18 +161,30 @@ class RabbitMQ:
             the type of exchange point
             Must be either one of the
                 'direct', 'topic', 'headers', 'fanout', or 'match'
-        durable : bool
-            survive the exchange point if the server restarts
-            if True, will be survvived
-            if False won't be re-created after server restart
-        auto_delete : bool
-            whether to delete the exchange point when no queue is bound to it
-            if True, will delete the exchange point when no queue is bound to it
-            else, will do otherwise
-        options : any
-            more options for the exchange_declare
-
+        **kwargs : dict
+            durable : bool
+                survive the exchange point if the server restarts
+                if True, will be survvived
+                if False won't be re-created after server restart
+                default is True
+            auto_delete : bool
+                whether to delete the exchange point when no queue is bound to it
+                if True, will delete the exchange point when no queue is bound to it
+                else, will do otherwise
+            options : any
+                more options for the exchange_declare
         """
+        ## default values
+        durable = True
+        auto_delete = False
+        options = None
+
+        if 'durable' in kwargs.keys():
+            durable = kwargs['durable']
+        if 'auto_delete' in kwargs.keys():
+            auto_delete = kwargs['auto_delete']
+        if 'options' in kwargs.keys():
+            options = kwargs['options']
 
         self.channel.exchange_declare(
             exchange=name,
@@ -240,9 +250,22 @@ class RabbitMQ:
             properties=options,
         )
 
-    def _define_data(self, event, content):
+    def _define_data(self, event: str, content: dict) -> str:
         """
         define seriazable data to use
+
+        Parameters:
+        ------------
+        event : str
+            the event name to use
+            using the events available under Event class is recommended
+        content : dict
+            dictionary of contents to publish
+
+        Retuns:
+        ---------
+        data_json : str
+            the data in json format wrapped into a string 
         """
         data = {"event": event, "date": str(datetime.now()), "content": content}
 

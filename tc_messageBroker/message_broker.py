@@ -95,6 +95,8 @@ class RabbitMQ:
         """
         set consuming events from a queue
         """
+        self.channel.queue_declare(queue=queue_name)
+
         self.channel.basic_consume(
             queue=queue_name,
             on_message_callback=self._consume_callback,
@@ -122,6 +124,8 @@ class RabbitMQ:
 
         """
         data = self._define_data(event=event, content=content)
+
+        self.channel.queue_declare(queue=queue_name)
 
         self.channel.basic_publish(
             exchange=self.exchange_name,
@@ -210,6 +214,8 @@ class RabbitMQ:
         pattern : str
             routing_key of the queue
         """
+        self.channel.queue_declare(queue=queue_name)
+
         self.channel.queue_bind(
             queue=queue_name, exchange=exchange_name, routing_key=pattern
         )

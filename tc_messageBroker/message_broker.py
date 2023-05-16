@@ -49,7 +49,7 @@ class RabbitMQ:
             )
             self.channel = self.connection.channel()
 
-            # make sure that the channel is created, 
+            # make sure that the channel is created,
             # if not this statement will create it
             self.channel.queue_declare(queue=queue_name)
 
@@ -61,7 +61,7 @@ class RabbitMQ:
             )
             return True
         except Exception as exp:
-            logging.info("Something went wrong with RabbitMQ", exp)
+            logging.info(" Something went wrong with RabbitMQ", exp)
             return False
 
     def _consume_callback(self, ch, method, properties, body) -> bool:
@@ -85,10 +85,10 @@ class RabbitMQ:
         event = body_serialized["event"]
 
         if event not in self.event_function.keys():
-            logging.info("An Event was received that doesn't exist")
+            logging.info(" An Event was received that doesn't exist")
             self.channel.basic_reject(delivery_tag=method.delivery_tag, requeue=True)
         else:
-            self.event_function[event]
+            self.event_function[event]()
             self.channel.basic_ack(delivery_tag=method.delivery_tag)
 
     def consume(self, queue_name: str, consume_options: dict = None):
@@ -179,12 +179,12 @@ class RabbitMQ:
         auto_delete = False
         options = None
 
-        if 'durable' in kwargs.keys():
-            durable = kwargs['durable']
-        if 'auto_delete' in kwargs.keys():
-            auto_delete = kwargs['auto_delete']
-        if 'options' in kwargs.keys():
-            options = kwargs['options']
+        if "durable" in kwargs.keys():
+            durable = kwargs["durable"]
+        if "auto_delete" in kwargs.keys():
+            auto_delete = kwargs["auto_delete"]
+        if "options" in kwargs.keys():
+            options = kwargs["options"]
 
         self.channel.exchange_declare(
             exchange=name,
@@ -265,7 +265,7 @@ class RabbitMQ:
         Retuns:
         ---------
         data_json : str
-            the data in json format wrapped into a string 
+            the data in json format wrapped into a string
         """
         data = {"event": event, "date": str(datetime.now()), "content": content}
 

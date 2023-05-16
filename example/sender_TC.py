@@ -12,7 +12,5 @@ if __name__ == "__main__":
     content = {"content": "content_analyzer_publish"}
 
     rabbit_mq.publish(
-        Queue.DISCORD_ANALYZER, 
-        event=Event.DISCORD_ANALYZER.RUN, 
-        content=content
+        Queue.DISCORD_ANALYZER, event=Event.DISCORD_ANALYZER.RUN, content=content
     )

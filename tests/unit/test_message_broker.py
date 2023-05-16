@@ -70,8 +70,8 @@ def test_consume_publish_no_event():
 
 
 @pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (start_consuming woudn't stop and test wouldn't end)" # flake8: noqa
-) 
+    reason="Unable to test on GitHub Actions (start_consuming woudn't stop and test wouldn't end)"  # flake8: noqa
+)
 def test_consume_publish_with_event():
     """
     consume an event which does not exists

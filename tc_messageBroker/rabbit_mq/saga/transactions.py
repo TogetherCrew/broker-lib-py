@@ -10,7 +10,7 @@ class DISCORD_UPDATE_CHANNELS_TRANSACTIONS(ITransaction):
             Queue.DISCORD_BOT,
             Event.DISCORD_BOT.FETCH,
             order=1,
-            status=Status.PENDING,
+            status=Status.NOT_STARTED,
             message=None,
             start=None,
             end=None,

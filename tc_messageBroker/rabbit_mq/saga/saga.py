@@ -8,7 +8,7 @@ class DiscordUpdateChannel(ISaga):
     def __init__(self, data: any) -> None:
         super().__init__(
             ChoreographyDict.DISCORD_UPDATE_CHANNELS,
-            Status.PENDING,
+            Status.NOT_STARTED,
             data=data,
             created_at=datetime.now(),
             next=None,

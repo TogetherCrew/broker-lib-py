@@ -7,7 +7,7 @@ class ISaga:
     def __init__(
         self,
         choreography: IChoreography,
-        status: int,
+        status: str,
         data: any,
         created_at: datetime,
         next: callable = None,

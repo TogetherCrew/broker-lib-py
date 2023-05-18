@@ -1,6 +1,6 @@
 class ITransaction:
     def __init__(
-        self, queue: str, event: str, order: int, status: int, **kwargs
+        self, queue: str, event: str, order: int, status: str, **kwargs
     ) -> None:
         """
         the transaction happening inside the saga architecture

@@ -145,3 +145,36 @@ class Saga:
         data["updatedAt"] = datetime.now()
 
         return data
+    
+def get_saga(guildId, connection_url):
+    """
+    get saga object for a special guild
+
+    Parameters:
+    ------------
+    guildId : str
+        the guildId which the saga belongs to
+    connection_url : str
+        the connection to db which the saga architecture is saved
+
+    Returns:
+    ----------
+    """
+    mongodb = MongoDB(connection_str=connection_url)
+    data = mongodb.read(
+        query= {
+            "data.guildId": guildId
+        }, 
+        count = 1
+    )
+
+    saga_obj = Saga(
+        choreography=data['choreography'],
+        status=data['status'],
+        created_at=data['createdAt'],
+        sagaId=data['sagaId'],
+        data=data['data']
+    )
+
+    return saga_obj
+

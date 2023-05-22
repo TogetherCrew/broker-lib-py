@@ -27,6 +27,7 @@ class Saga:
         publish_method: callable,
         call_function: callable,
         mongo_connection: str,
+        test_mode=False,
     ):
         """
         calling the next transaction within the saga
@@ -40,10 +41,15 @@ class Saga:
             a function to be called when the message recieved
         mongo_connection : str
             the mongodb connection url to update the db
+        test_mode : bool
+            testing the function indicates that we wouldn't read or write on DB
+            default is False
         """
         tx_sorted, tx_not_started_count = self._sort_transactions(
             self.choreography.transactions
         )
+
+        self.status = Status.IN_PROGRESS
 
         ## get the first order transaction
         current_tx = tx_sorted[0]
@@ -51,7 +57,8 @@ class Saga:
         current_tx.status = Status.IN_PROGRESS
         current_tx.start = datetime.now()
 
-        self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
+        if not test_mode:
+            self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
 
         try:
             ## the function we would call
@@ -59,7 +66,8 @@ class Saga:
 
             current_tx.status = Status.SUCCESS
             current_tx.end = datetime.now()
-            current_tx.runtime = (current_tx.end - current_tx.start).timestamp() * 1000
+            ## in miliseconds format
+            current_tx.runtime = (current_tx.end - current_tx.start).microseconds / 1000
 
             ## if we ran the last transaction
             if tx_not_started_count == 1:
@@ -72,13 +80,23 @@ class Saga:
                     content={"uuid": self.uuid, "data": result},
                 )
 
-            self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
+            if not test_mode:
+                self._update_save(
+                    transactions=tx_sorted, mongo_connection=mongo_connection
+                )
 
         except Exception as exp:
             current_tx.error = str(exp)
-            current_tx.status = Status.FAILED
 
-            self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
+            if current_tx.status != Status.SUCCESS:
+                current_tx.status = Status.FAILED
+
+            self.status = Status.FAILED
+
+            if not test_mode:
+                self._update_save(
+                    transactions=tx_sorted, mongo_connection=mongo_connection
+                )
 
     def _sort_transactions(self, transactions: list[ITransaction]):
         """

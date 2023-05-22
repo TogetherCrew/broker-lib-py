@@ -144,7 +144,7 @@ class MongoDB:
                     logging.error(f"{exp}: replace query was not given!")
                 except Exception as exp:
                     logging.error(f"Exception: {exp}")
-                
+
             case _:
                 logging.error(f"The writing mode: {mode} is not implemented!")
 

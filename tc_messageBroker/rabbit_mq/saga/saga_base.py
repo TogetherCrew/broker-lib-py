@@ -57,8 +57,9 @@ class Saga:
         current_tx.status = Status.IN_PROGRESS
         current_tx.start = datetime.now()
 
-        if not test_mode:
-            self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
+        self._update_save(
+            transactions=tx_sorted, mongo_connection=mongo_connection, test=test_mode
+        )
 
         try:
             ## the function we would call
@@ -80,10 +81,11 @@ class Saga:
                     content={"uuid": self.uuid, "data": result},
                 )
 
-            if not test_mode:
-                self._update_save(
-                    transactions=tx_sorted, mongo_connection=mongo_connection
-                )
+            self._update_save(
+                transactions=tx_sorted,
+                mongo_connection=mongo_connection,
+                test=test_mode,
+            )
 
         except Exception as exp:
             current_tx.error = str(exp)
@@ -93,10 +95,11 @@ class Saga:
 
             self.status = Status.FAILED
 
-            if not test_mode:
-                self._update_save(
-                    transactions=tx_sorted, mongo_connection=mongo_connection
-                )
+            self._update_save(
+                transactions=tx_sorted,
+                mongo_connection=mongo_connection,
+                test=test_mode,
+            )
 
     def _sort_transactions(self, transactions: list[ITransaction]):
         """
@@ -155,24 +158,30 @@ class Saga:
 
         return np.array(transactions)[sorted_indices]
 
-    def _update_save(self, transactions: list[ITransaction], mongo_connection):
+    def _update_save(
+        self, transactions: list[ITransaction], mongo_connection, test=False
+    ):
         """
         update the transactions in saga choreography and then save data to db
+
+        test is the test mode which it does not interact with db.
+        default is False meaning we have to have an interaction with db
         """
-        ## save the status into DB
-        mongodb = MongoDB(mongo_connection)
-        mongodb.connect()
-        data = self._create_data()
+        if not test:
+            ## save the status into DB
+            mongodb = MongoDB(mongo_connection)
+            mongodb.connect()
+            data = self._create_data()
 
-        ## creating a duplicate choreography to avoid shallow copy
-        choreography = IChoreography(
-            name=self.choreography.name, transactions=transactions
-        )
+            ## creating a duplicate choreography to avoid shallow copy
+            choreography = IChoreography(
+                name=self.choreography.name, transactions=transactions
+            )
 
-        self.choreography = choreography
+            self.choreography = choreography
 
-        ## update the available choreography
-        mongodb.replace(sagaId=self.uuid, data=data)
+            ## update the available choreography
+            mongodb.replace(sagaId=self.uuid, data=data)
 
     def _create_data(self) -> dict[str, any]:
         """

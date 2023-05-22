@@ -5,4 +5,3 @@ class IChoreography:
     def __init__(self, name: str, transactions: list[ITransaction]) -> None:
         self.name = name
         self.transactions = transactions
-        

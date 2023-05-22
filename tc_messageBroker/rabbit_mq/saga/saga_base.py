@@ -1,4 +1,5 @@
 from .choreography_base import IChoreography
+from .transaction_base import ITransaction
 from tc_messageBroker.rabbit_mq.status import Status
 import uuid
 from datetime import datetime
@@ -40,36 +41,17 @@ class Saga:
         mongo_connection : str
             the mongodb connection url to update the db
         """
-        transactions = self.choreography.transactions
+        tx_sorted, tx_not_started_count = self._sort_transactions(
+            self.choreography.transactions
+        )
 
-        ## get the transactions with status NOT_STARTED
-        tx_not_started = []
-        ## other transactions
-        tx_other = []
-
-        for tx in transactions:
-            if tx.status == Status.NOT_STARTED:
-                tx_not_started.append(tx)
-            else:
-                tx_other.append(tx)
-
-        ## converting to numpy in order to
-        ## make the slices of array pointing to one place in memory
-        tx_not_started = np.array(tx_not_started)
-        tx_other = np.array(tx_other)
-
-        tx_orders = [tx.order for tx in tx_not_started]
-
-        sorted_indices = np.argsort(tx_orders)
-
-        current_tx = tx_not_started[sorted_indices[0]]
+        ## get the first order transaction
+        current_tx = tx_sorted[0]
 
         current_tx.status = Status.IN_PROGRESS
         current_tx.start = datetime.now()
 
-        self._update_save(
-            tx_tuple=(tx_not_started, tx_other), mongo_connection=mongo_connection
-        )
+        self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
 
         try:
             ## the function we would call
@@ -80,29 +62,82 @@ class Saga:
             current_tx.runtime = (current_tx.end - current_tx.start).timestamp() * 1000
 
             ## if we ran the last transaction
-            if len(tx_not_started) == 1:
+            if tx_not_started_count == 1:
                 self.status = Status.SUCCESS
             else:
-                next_tx = tx_not_started[sorted_indices[1]]
+                next_tx = tx_sorted[1]
                 publish_method(
                     queue_name=next_tx.queue,
                     event=next_tx.event,
                     content={"uuid": self.uuid, "data": result},
                 )
 
-            self._update_save(
-                tx_tuple=(tx_not_started, tx_other), mongo_connection=mongo_connection
-            )
+            self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
 
         except Exception as exp:
             current_tx.error = str(exp)
             current_tx.status = Status.FAILED
 
-            self._update_save(
-                tx_tuple=(tx_not_started, tx_other), mongo_connection=mongo_connection
-            )
+            self._update_save(transactions=tx_sorted, mongo_connection=mongo_connection)
 
-    def _update_save(self, tx_tuple: tuple[list, list], mongo_connection):
+    def _sort_transactions(self, transactions: list[ITransaction]):
+        """
+        sort transactions by their order and status
+        the NOT_STARTED ones would be at the first of the list
+        and they are ordered by `order` property
+
+        Parameters:
+        ------------
+        transactions : list[ITransaction]
+            the list of transactions to order
+
+        Returns:
+        ---------
+        transactions_ordered : ndarray(ITransaction)
+            the transactions ordered by status
+            the `NOT_STARTED` ones are the firsts
+            it is actually a numpy array for us to be able to
+              change the properties in deep memory
+        tx_not_started_count : int
+            the not started transactions count
+        """
+        tx_not_started = []
+        tx_other = []
+
+        for tx in transactions:
+            if tx.status == Status.NOT_STARTED:
+                tx_not_started.append(tx)
+            else:
+                tx_other.append(tx)
+
+        tx_not_started_count = len(tx_not_started)
+        tx_not_started_sorted = self._sort_transactions_orderly(tx_not_started)
+
+        transactions_ordered = list(tx_not_started_sorted)
+        transactions_ordered.extend(tx_other)
+
+        return np.array(transactions_ordered), tx_not_started_count
+
+    def _sort_transactions_orderly(self, transactions: list[ITransaction]):
+        """
+        sort transactions by their `order` property
+
+        Parameters:
+        ------------
+        transactions : list[ITransaction]
+            the list of transactions to order
+
+        Returns:
+        ---------
+        transactions_orderly_sorted : list[ITransaction]
+            transactions sorted by their order
+        """
+        orders = [tx.order for tx in transactions]
+        sorted_indices = np.argsort(orders)
+
+        return np.array(transactions)[sorted_indices]
+
+    def _update_save(self, transactions: list[ITransaction], mongo_connection):
         """
         update the transactions in saga choreography and then save data to db
         """
@@ -110,9 +145,6 @@ class Saga:
         mongodb = MongoDB(mongo_connection)
         mongodb.connect()
         data = self._create_data()
-
-        transactions = [tx_tuple[0]]
-        transactions.extend(tx_tuple[1])
 
         ## creating a duplicate choreography to avoid shallow copy
         choreography = IChoreography(
@@ -160,6 +192,8 @@ def get_saga(guildId, connection_url):
 
     Returns:
     ----------
+    saga_obj : Saga
+        the saga object to use
     """
     mongodb = MongoDB(connection_str=connection_url)
     mongodb.connect()

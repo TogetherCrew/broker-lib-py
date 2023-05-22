@@ -90,20 +90,26 @@ class MongoDB:
             the count of samples to get
             if 1 then findOne method is used
             else the find method in mongoClient is used
-        
+
         Returns:
         ---------
         data : list | dict
-            a list of data or one dictionary would be returned 
+            a list of data or one dictionary would be returned
             based on the count of data requested
-            if count equal to 1 then one python dictionary would be returned 
+            if count equal to 1 then one python dictionary would be returned
             else a list is going to be returned
         """
         if count == 1:
+            print(f"self.db_name: {self.db_name}")
+            print(f"self.collection_name: {self.collection_name}")
+            print(f"self.client: {self.client}")
+
             cursor = self.client[self.db_name][self.collection_name].find_one(query)
             data = cursor
         else:
-            cursor = self.client[self.db_name][self.collection_name].find(query).limit(count)
+            cursor = (
+                self.client[self.db_name][self.collection_name].find(query).limit(count)
+            )
             data = list(cursor)
 
         return data

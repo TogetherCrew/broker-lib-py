@@ -1,6 +1,5 @@
 from .choreography_base import IChoreography
 from tc_messageBroker.rabbit_mq.status import Status
-from tc_messageBroker import RabbitMQ
 import uuid
 from datetime import datetime
 import numpy as np
@@ -24,7 +23,7 @@ class Saga:
 
     def next(
         self,
-        publish_method: RabbitMQ.publish | RabbitMQ.publish_on_exchange,
+        publish_method: callable,
         call_function: callable,
         mongo_connection: str,
     ):
@@ -34,7 +33,7 @@ class Saga:
 
         Parameters:
         ------------
-        publish_method : RabbitMQ.publish
+        publish_method : RabbitMQ.publish | RabbitMQ.publish_on_exchange
             the publish methods that are from the RabbitMQ
         call_function : callable
             a function to be called when the message recieved
@@ -103,12 +102,13 @@ class Saga:
                 tx_tuple=(tx_not_started, tx_other), mongo_connection=mongo_connection
             )
 
-    def _update_save(self, tx_tuple: tuple(list, list), mongo_connection):
+    def _update_save(self, tx_tuple: tuple[list, list], mongo_connection):
         """
         update the transactions in saga choreography and then save data to db
         """
         ## save the status into DB
         mongodb = MongoDB(mongo_connection)
+        mongodb.connect()
         data = self._create_data()
 
         transactions = [tx_tuple[0]]
@@ -145,7 +145,8 @@ class Saga:
         data["updatedAt"] = datetime.now()
 
         return data
-    
+
+
 def get_saga(guildId, connection_url):
     """
     get saga object for a special guild
@@ -161,20 +162,16 @@ def get_saga(guildId, connection_url):
     ----------
     """
     mongodb = MongoDB(connection_str=connection_url)
-    data = mongodb.read(
-        query= {
-            "data.guildId": guildId
-        }, 
-        count = 1
-    )
+    mongodb.connect()
+
+    data = mongodb.read(query={"data.guildId": guildId}, count=1)
 
     saga_obj = Saga(
-        choreography=data['choreography'],
-        status=data['status'],
-        created_at=data['createdAt'],
-        sagaId=data['sagaId'],
-        data=data['data']
+        choreography=data["choreography"],
+        status=data["status"],
+        created_at=data["createdAt"],
+        sagaId=data["sagaId"],
+        data=data["data"],
     )
 
     return saga_obj
-

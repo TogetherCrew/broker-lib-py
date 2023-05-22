@@ -114,11 +114,6 @@ class MongoDB:
 
         return data
 
-    def _db_callback_wrapper(self, session):
-        """
-        just a callback wrapper
-        """
-
     def _write_db(self, session, data: dict, mode="add", **kwargs) -> None:
         """
         writing the data into db within a session
@@ -137,19 +132,21 @@ class MongoDB:
                 if our mode is replace, then we should use a dictionary to query
                 the document we want to replace
         """
-        if mode == "add":
-            session.client[self.db_name][self.collection_name].insert_many(data)
-        elif mode == "replace":
-            if "replace_query" not in kwargs.keys():
-                msg = "Replace query was not given"
-                msg += " and updating the document in mongo cannot happen!"
-                logging.error(msg)
-            else:
-                session.client[self.db_name][self.collection_name].replaceOne(
-                    kwargs["replace_query"], data
-                )
-        else:
-            logging.error(f"The writing mode: {mode} is not implemented!")
+        match mode:
+            case "add":
+                session.client[self.db_name][self.collection_name].insert_many(data)
+            case "replace":
+                try:
+                    session.client[self.db_name][self.collection_name].replaceOne(
+                        kwargs["replace_query"], data
+                    )
+                except KeyError as exp:
+                    logging.error(f"{exp}: replace query was not given!")
+                except Exception as exp:
+                    logging.error(f"Exception: {exp}")
+                
+            case _:
+                logging.error(f"The writing mode: {mode} is not implemented!")
 
     def _validator(self, data: dict):
         """

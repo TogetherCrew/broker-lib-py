@@ -61,7 +61,7 @@ class RabbitMQ:
             )
             return True
         except Exception as exp:
-            logging.info(" Something went wrong with RabbitMQ", exp)
+            logging.error(f" Something went wrong with RabbitMQ {exp}")
             return False
 
     def _consume_callback(self, ch, method, properties, body) -> bool:
@@ -164,7 +164,7 @@ class RabbitMQ:
         type : str
             the type of exchange point
             Must be either one of the
-                'direct', 'topic', 'headers', 'fanout', or 'match'
+                'direct', 'topic', 'headers', or 'fanout'
         **kwargs : dict
             durable : bool
                 survive the exchange point if the server restarts

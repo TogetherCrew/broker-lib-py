@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="tc-messageBroker",
-    version="0.0.1",
+    version="1.0.0",
     author="Mohammad Amin Dadgar, RnDAO",
     maintainer="Mohammad Amin Dadgar",
     maintainer_email="dadgaramin96@gmail.com",

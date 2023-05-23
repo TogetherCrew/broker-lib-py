@@ -55,9 +55,9 @@ def test_tc_message_broker_set_on_event():
     messageBroker.on_event(event_name="some_event", on_message=callback_func)
 
 
-# @pytest.mark.skip(
-#     reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
-# )
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
+)
 def test_connection_rabbit_mq():
     broker_url = "localhost"
 
@@ -68,9 +68,9 @@ def test_connection_rabbit_mq():
     assert success is True
 
 
-# @pytest.mark.skip(
-#     reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
-# )
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
+)
 def test_consume_publish_no_event():
     """
     consume an event which does not exists

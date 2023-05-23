@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 import pytest
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_insert_one():
     connection_url = "mongodb://127.0.0.1:27017/"
 
@@ -18,7 +18,7 @@ def test_insert_one():
     mongodb.write(data=[data])
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_insert_multiple():
     connection_url = "mongodb://127.0.0.1:27017/"
 
@@ -33,7 +33,7 @@ def test_insert_multiple():
     mongodb.write(data=documents)
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_read_count_one():
     """
     read from db after writing using the previous function (above)
@@ -54,7 +54,7 @@ def test_read_count_one():
     assert "updatedAt" in results.keys()
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_read_count_multiple():
     """
     read from db after writing using the previous function (above)
@@ -79,7 +79,7 @@ def test_read_count_multiple():
         assert "updatedAt" in results[i].keys()
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_replace():
     """
     test replacing a document we just inserted
@@ -113,7 +113,7 @@ def test_replace():
     assert document == new_data
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_delete():
     """
     delete all except one of the ligitimate data which we choose
@@ -127,7 +127,7 @@ def test_delete():
     mongodb.delete(query={"data.guildId": {"$ne": "993163081939165234"}})
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_wrong_input():
     """
     give wrong input to insert
@@ -144,7 +144,7 @@ def test_wrong_input():
     assert valid is False
 
 
-pytest.mark.skip(reason="No MongoDB instance available.")
+@pytest.mark.skip(reason="No MongoDB instance available.")
 def create_random_data():
     random_guildId = ""
     for _ in range(18):

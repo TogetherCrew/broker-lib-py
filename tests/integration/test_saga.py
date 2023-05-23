@@ -7,9 +7,9 @@ from datetime import datetime
 import pytest
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no available MongoDB instance)"
-)
+# @pytest.mark.skip(
+#     reason="Unable to test on GitHub Actions (no available MongoDB instance)"
+# )
 def test_inputs():
     connection_url = "mongodb://127.0.0.1:27017/"
 

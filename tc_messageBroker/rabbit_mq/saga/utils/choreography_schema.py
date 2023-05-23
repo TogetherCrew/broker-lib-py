@@ -2,46 +2,64 @@ from uuid import uuid1
 from tc_messageBroker.rabbit_mq.status import Status
 
 choreography_schema = {
-    "sagaId": {"type": "string", "required": True, "unique": True, "default": uuid1()},
-    "choreography": {
-        "name": {
-            "type": "string",
-            "required": True,
-        },
-        "transactions": {
-            "queue": {"type": "string", "required": True},
-            "event": {"type": "string", "required": True},
-            "order": {"type": "number", "required": True},
-            "status": {
-                "type": "string",
-                "required": True,
-                "enum": [
-                    Status.NOT_STARTED,
-                    Status.IN_PROGRESS,
-                    Status.SUCCESS,
-                    Status.FAILED,
-                    Status.CANCELLED,
-                ],
+    "type": "object",
+    "properties": {
+        "sagaId": {"type": "string", "unique": True},
+        "choreography": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                },
+                "transactions": {
+                    "type": "object",
+                    "patternProperties": {
+                        "^[0-9]+$": {
+                            "type": "object",
+                            "properties": {
+                                "queue": {"type": "string"},
+                                "event": {"type": "string"},
+                                "order": {"type": ["integer", "string"]},
+                                "status": {
+                                    "type": "string",
+                                    "enum": [
+                                        Status.NOT_STARTED,
+                                        Status.IN_PROGRESS,
+                                        Status.SUCCESS,
+                                        Status.FAILED,
+                                        Status.CANCELLED,
+                                    ],
+                                },
+                                "message": {"type": "string"},
+                                "start": {"type": "string"},
+                                "end": {"type": "string"},
+                                "runtime": {"type": "number"},
+                                "error": {"type": "string"},
+                            },
+                            "required": ["queue", "event", "order", "status"],
+                            "additionalProperties": False,
+                        }
+                    },
+                    "additionalProperties": False,
+                },
             },
-            "message": {"type": "string", "required": False},
-            "start": {"type": "date-time", "required": False},
-            "end": {"type": "date-time", "required": False},
-            "runtime": {"type": "number", "required": False},
-            "error": {"type": "string", "required": False},
+            "required": ["name", "transactions"],
+            "additionalProperties": False,
         },
+        "status": {
+            "type": "string",
+            "enum": [
+                Status.NOT_STARTED,
+                Status.IN_PROGRESS,
+                Status.SUCCESS,
+                Status.FAILED,
+                Status.CANCELLED,
+            ],
+        },
+        "data": {"type": "object"},
+        "createdAt": {"type": "string", "format": "date-time"},
+        "updatedAt": {"type": "string", "format": "date-time"},
     },
-    "status": {
-        "type": "string",
-        "enum": [
-            Status.NOT_STARTED,
-            Status.IN_PROGRESS,
-            Status.SUCCESS,
-            Status.FAILED,
-            Status.CANCELLED,
-        ],
-        "required": True,
-    },
-    "data": {"type": "dict", "required": False},
-    "createdAt": {"type": "date-time", "required": True},
-    "updatedAt": {"type": "date-time", "required": True},
+    "required": ["sagaId", "choreography", "status", "createdAt", "updatedAt"],
+    "additionalProperties": False,
 }

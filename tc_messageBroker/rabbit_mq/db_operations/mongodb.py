@@ -4,9 +4,10 @@ from pymongo.write_concern import WriteConcern
 from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import (
     choreography_schema,
 )
-from jsonschema import validate
+import jsonschema
 from jsonschema.exceptions import ValidationError
 import logging
+from datetime import datetime
 
 
 class MongoDB:
@@ -48,7 +49,7 @@ class MongoDB:
         data : dict
             the data we're going to replace the document with
         """
-        valid = self._validator(data)
+        valid = self._validator([data])
 
         def callback_wrapper(session):
             self._write_db(
@@ -63,7 +64,7 @@ class MongoDB:
                     write_concern=WriteConcern("local"),
                 )
 
-    def write(self, data: dict):
+    def write(self, data: list[dict]):
         """
         write the data into db
         """
@@ -100,10 +101,6 @@ class MongoDB:
             else a list is going to be returned
         """
         if count == 1:
-            print(f"self.db_name: {self.db_name}")
-            print(f"self.collection_name: {self.collection_name}")
-            print(f"self.client: {self.client}")
-
             cursor = self.client[self.db_name][self.collection_name].find_one(query)
             data = cursor
         else:
@@ -113,6 +110,24 @@ class MongoDB:
             data = list(cursor)
 
         return data
+
+    def delete(self, query: dict):
+        """
+        delete documents
+
+        Parameters:
+        -------------
+        query : dict
+            the query to delete documents we want
+        """
+        with self.client.start_session() as session:
+            session.with_transaction(
+                callback=lambda session: self._write_db(
+                    session, data=None, mode="delete", delete_query=query
+                ),
+                read_concern=ReadConcern("local"),
+                write_concern=WriteConcern("local"),
+            )
 
     def _write_db(self, session, data: dict, mode="add", **kwargs) -> None:
         """
@@ -131,24 +146,31 @@ class MongoDB:
             replace_query : dict
                 if our mode is replace, then we should use a dictionary to query
                 the document we want to replace
+            delete_query : dict
+                if our mode is delete, then we should use a dictionary to query
+                the documents we want to delete
         """
-        match mode:
-            case "add":
-                session.client[self.db_name][self.collection_name].insert_many(data)
-            case "replace":
-                try:
-                    session.client[self.db_name][self.collection_name].replaceOne(
+
+        try:
+            match mode:
+                case "add":
+                    session.client[self.db_name][self.collection_name].insert_many(data)
+                case "replace":
+                    session.client[self.db_name][self.collection_name].replace_one(
                         kwargs["replace_query"], data
                     )
-                except KeyError as exp:
-                    logging.error(f"{exp}: replace query was not given!")
-                except Exception as exp:
-                    logging.error(f"Exception: {exp}")
+                case "delete":
+                    session.client[self.db_name][self.collection_name].delete_many(
+                        kwargs["delete_query"]
+                    )
+                case _:
+                    logging.error(f"The writing mode: {mode} is not implemented!")
+        except KeyError as exp:
+            logging.error(f"{exp}: unsufficient function inputs!")
+        except Exception as exp:
+            logging.error(f"Error occured: {exp}")
 
-            case _:
-                logging.error(f"The writing mode: {mode} is not implemented!")
-
-    def _validator(self, data: dict):
+    def _validator(self, data: list[dict]):
         """
         validate the schema of data before saving it to db
 
@@ -158,8 +180,15 @@ class MongoDB:
             a nested python dict
         """
         try:
-            validate(instance=data, schema=choreography_schema)
+            for document in data:
+                jsonschema.validate(
+                    instance=document,
+                    schema=choreography_schema,
+                )
+            
             return True
         except ValidationError as error:
             logging.error(f"Not valid schema to save in DB! Error: {error}")
             return False
+        
+    

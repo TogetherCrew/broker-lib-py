@@ -1,4 +1,3 @@
-from uuid import uuid1
 from tc_messageBroker.rabbit_mq.status import Status
 
 choreography_schema = {

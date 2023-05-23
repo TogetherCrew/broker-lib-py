@@ -87,7 +87,7 @@ def test_replace():
 
     mongodb.write(data=[data])
 
-    data.pop('_id')
+    data.pop("_id")
 
     new_data = deepcopy(data)
 
@@ -101,7 +101,7 @@ def test_replace():
     mongodb.replace(data["sagaId"], new_data)
 
     document = mongodb.read({"sagaId": new_data["sagaId"]})
-    document.pop('_id')
+    document.pop("_id")
 
     assert document != data
     assert document == new_data
@@ -169,5 +169,6 @@ def create_random_data():
 
     return data
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     test_replace()

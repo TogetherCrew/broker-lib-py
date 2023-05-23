@@ -7,7 +7,6 @@ from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import (
 import jsonschema
 from jsonschema.exceptions import ValidationError
 import logging
-from datetime import datetime
 
 
 class MongoDB:
@@ -185,10 +184,7 @@ class MongoDB:
                     instance=document,
                     schema=choreography_schema,
                 )
-            
             return True
         except ValidationError as error:
             logging.error(f"Not valid schema to save in DB! Error: {error}")
             return False
-        
-    

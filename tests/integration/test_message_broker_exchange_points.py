@@ -1,6 +1,10 @@
 from tc_messageBroker import RabbitMQ
+import pytest
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_declare_default_exchange_direct():
     """
     declare direct exchange point with default parameters,
@@ -17,6 +21,9 @@ def test_tc_message_broker_declare_default_exchange_direct():
     messageBroker.create_exchange(name="exchange_point", type="direct")
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_declare_default_exchange_topic():
     """
     declare topic exchange point with default parameters,
@@ -32,6 +39,9 @@ def test_tc_message_broker_declare_default_exchange_topic():
     messageBroker.create_exchange(name="exchange_point2", type="topic")
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_declare_exchange_fanout():
     """
     declare fanout exchange point with default parameters,
@@ -47,6 +57,9 @@ def test_tc_message_broker_declare_exchange_fanout():
     messageBroker.create_exchange(name="exchange_point3", type="fanout")
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_declare_default_exchange_headers():
     """
     declare `match` exchange with default parameters,
@@ -62,6 +75,9 @@ def test_tc_message_broker_declare_default_exchange_headers():
     messageBroker.create_exchange(name="exchange_point4", type="headers")
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_declare_durable_false_exchange_direct():
     """
     declare `match` exchange with default parameters,
@@ -81,6 +97,9 @@ def test_tc_message_broker_declare_durable_false_exchange_direct():
     )
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_declare_auto_delete_true_exchange_direct():
     """
     declare `match` exchange with default parameters,
@@ -100,6 +119,9 @@ def test_tc_message_broker_declare_auto_delete_true_exchange_direct():
     )
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_publish_on_exchange():
     """
     declare direct exchange point with default parameters,
@@ -122,6 +144,9 @@ def test_tc_message_broker_publish_on_exchange():
     )
 
 
+@pytest.mark.skip(
+    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
+)
 def test_tc_message_broker_bind_queue_on_exchange():
     """
     declare direct exchange point with default parameters,

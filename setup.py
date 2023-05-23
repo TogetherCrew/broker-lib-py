@@ -9,6 +9,7 @@ setup(
     packages=find_packages(),
     description="Shared library for message broker in Python",
     long_description=open("README.md").read(),
+    long_description_content_type='text/markdown',
     install_requires=[
         "pytest",
     ],

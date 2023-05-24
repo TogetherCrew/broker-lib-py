@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
+
 setup(
     name="tc-messageBroker",
     version="1.0.0",
@@ -10,7 +14,5 @@ setup(
     description="Shared library for message broker in Python",
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
-    install_requires=[
-        "pytest",
-    ],
+    install_requires=requirements,
 )

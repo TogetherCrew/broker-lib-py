@@ -7,18 +7,22 @@ import json
 
 
 class RabbitMQ:
-    def __init__(self, broker_url: str) -> None:
+    def __init__(self, broker_url: str, port: int, username: str, password: str):
         logging.basicConfig()
         logging.getLogger().setLevel(logging.INFO)
 
         self.broker_url = broker_url
+        self.port = port
+        self._username = username
+        self._password = password
+
         ## it will use the default exchange point if not created
         self.exchange_name = ""
         self.channel = None
         self.connection = None
         self.event_function = {}
 
-    def __new__(cls, broker_url: str):
+    def __new__(cls, broker_url: str, port: int, username: str, password: str):
         ## making it singleton
         if not hasattr(cls, "instance"):
             cls.instance = super(RabbitMQ, cls).__new__(cls)
@@ -43,9 +47,12 @@ class RabbitMQ:
             otherwise would return False
         """
         try:
+            credentials = pika.PlainCredentials(self._username, self._password)
             amqpServer = self.broker_url
             self.connection = pika.BlockingConnection(
-                pika.ConnectionParameters(amqpServer)
+                pika.ConnectionParameters(
+                    host=amqpServer, port=self.port, credentials=credentials
+                ),
             )
             self.channel = self.connection.channel()
 
@@ -88,7 +95,7 @@ class RabbitMQ:
             logging.info(" An Event was received that doesn't exist")
             self.channel.basic_reject(delivery_tag=method.delivery_tag, requeue=True)
         else:
-            self.event_function[event]()
+            self.event_function[event](body_serialized)
             self.channel.basic_ack(delivery_tag=method.delivery_tag)
 
     def consume(self, queue_name: str, consume_options: dict = None):
@@ -142,7 +149,7 @@ class RabbitMQ:
         -------------
         event_name : str
             the event name we're setting the function for
-        on_message : str
+        on_message : callable
             the message when recieved (consumed) to call the function
 
         """

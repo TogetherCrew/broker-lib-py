@@ -18,15 +18,9 @@ DISCORD_UPDATE_CHANNELS_TRANSACTIONS = [
         status=Status.NOT_STARTED,
     ),
     ITransaction(
-        Queue.DISCORD_ANALYZER,
-        Event.DISCORD_ANALYZER.SAVE,
-        order=3,
-        status=Status.NOT_STARTED,
-    ),
-    ITransaction(
         Queue.SERVER_API,
         Event.SERVER_API.UPDATE_GUILD,
-        order=4,
+        order=3,
         status=Status.NOT_STARTED,
     ),
 ]

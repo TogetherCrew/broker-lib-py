@@ -13,9 +13,15 @@ def test_tc_message_broker_declare_default_exchange_direct():
      options = None
     """
 
-    url = "localhost"
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
+
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(name="exchange_point", type="direct")
@@ -31,9 +37,15 @@ def test_tc_message_broker_declare_default_exchange_topic():
      auto_delete = False,
      options = None
     """
-    url = "localhost"
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
+
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(name="exchange_point2", type="topic")
@@ -49,9 +61,14 @@ def test_tc_message_broker_declare_exchange_fanout():
      auto_delete = False,
      options = None
     """
-    url = "localhost"
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(name="exchange_point3", type="fanout")
@@ -67,9 +84,14 @@ def test_tc_message_broker_declare_default_exchange_headers():
      auto_delete = False,
      options = None
     """
-    url = "localhost"
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(name="exchange_point4", type="headers")
@@ -85,9 +107,14 @@ def test_tc_message_broker_declare_durable_false_exchange_direct():
      auto_delete = False,
      options = None
     """
-    url = "localhost"
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(
@@ -107,9 +134,14 @@ def test_tc_message_broker_declare_auto_delete_true_exchange_direct():
      auto_delete = False,
      options = None
     """
-    url = "localhost"
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(
@@ -129,10 +161,14 @@ def test_tc_message_broker_publish_on_exchange():
      auto_delete = False,
      options = None
     """
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    url = "localhost"
-
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(name="exchange_point7", type="direct")
@@ -154,10 +190,14 @@ def test_tc_message_broker_bind_queue_on_exchange():
      auto_delete = False,
      options = None
     """
+    broker_url = "localhost"
+    port = 5672
+    username = "guest"
+    password = "guest"
 
-    url = "localhost"
-
-    messageBroker = RabbitMQ(broker_url=url)
+    messageBroker = RabbitMQ(
+        broker_url=broker_url, port=port, username=username, password=password
+    )
     _ = messageBroker.connect(queue_name="test_queue")
 
     messageBroker.create_exchange(name="exchange_point8", type="direct")

@@ -18,4 +18,4 @@ class DiscordBotEvent:
 
 class DiscordAnalyzerEvent:
     RUN = AnalyzerBaseEvent.RUN
-    SAVE = AnalyzerBaseEvent.SAVE
+    # SAVE = AnalyzerBaseEvent.SAVE

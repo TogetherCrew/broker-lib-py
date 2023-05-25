@@ -22,7 +22,7 @@ def test_choreagraphy_sorting_orders_predefined_choreogprahy():
         saga.choreography.transactions
     )
 
-    assert not_started_count == 4
+    assert not_started_count == 3
     order_val = 0
     for tx in tx_sorted:
         if tx.status == Status.NOT_STARTED:
@@ -45,7 +45,7 @@ def test_assert_sorting_status_predefined_choreagprahy():
         saga.choreography.transactions
     )
 
-    assert not_started_count == 4
+    assert not_started_count == 3
 
     condition = False
     for tx in tx_sorted:

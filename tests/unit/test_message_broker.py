@@ -44,7 +44,7 @@ def test_tc_message_broker_singleton():
 
     url_new = "127.0.0.1"
     messageBroker2 = RabbitMQ(
-            broker_url=url_new, port=port, username=username, password=password
+        broker_url=url_new, port=port, username=username, password=password
     )
     assert messageBroker == messageBroker2
     assert messageBroker.broker_url == url_new

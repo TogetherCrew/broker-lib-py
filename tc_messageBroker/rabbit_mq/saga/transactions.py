@@ -23,10 +23,10 @@ DISCORD_UPDATE_CHANNELS_TRANSACTIONS = [
     #     order=3,
     #     status=Status.NOT_STARTED,
     # ),
-    ITransaction(
-        Queue.SERVER_API,
-        Event.SERVER_API.UPDATE_GUILD,
-        order=3,
-        status=Status.NOT_STARTED,
-    ),
+    # ITransaction(
+    #     Queue.SERVER_API,
+    #     Event.SERVER_API.UPDATE_GUILD,
+    #     order=3,
+    #     status=Status.NOT_STARTED,
+    # ),
 ]

@@ -11,7 +11,7 @@ import logging
 
 class MongoDB:
     def __init__(
-        self, connection_str: str, db_name: str = "RnDAO", collection_name: str = "Saga"
+        self, connection_str: str, db_name: str = "Saga", collection_name: str = "saga"
     ) -> None:
         """
         initialize the mongodb class

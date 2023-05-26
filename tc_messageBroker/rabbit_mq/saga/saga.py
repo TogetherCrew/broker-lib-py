@@ -1,3 +1,4 @@
+from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
 from .choreography import ChoreographyDict
 from .saga_base import Saga
 from tc_messageBroker.rabbit_mq.status import Status
@@ -11,5 +12,13 @@ class DiscordUpdateChannel(Saga):
             Status.NOT_STARTED,
             data=data,
             created_at=datetime.now(),
-            next=None,
         )
+
+class DiscordScheculedJob(Saga):
+    def __init__(self, data: any) -> None:
+        super().__init__(
+                ChoreographyDict.DISCORD_SCHEDULED_JOB, 
+                Status.NOT_STARTED, 
+                data=data,
+                created_at=datetime.now(), 
+            )

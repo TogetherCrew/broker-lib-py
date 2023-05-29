@@ -231,7 +231,7 @@ class Saga:
         return data
 
 
-def get_saga(guildId, connection_url):
+def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
     """
     get saga object for a special guild
 
@@ -241,13 +241,19 @@ def get_saga(guildId, connection_url):
         the guildId which the saga belongs to
     connection_url : str
         the connection to db which the saga architecture is saved
+    db_name : str
+        the database name to use
+    collection : str
+        the collection which the saga is saved
 
     Returns:
     ----------
     saga_obj : Saga
         the saga object to use
     """
-    mongodb = MongoDB(connection_str=connection_url)
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection
+    )
     mongodb.connect()
 
     data = mongodb.read(query={"data.guildId": guildId}, count=1)

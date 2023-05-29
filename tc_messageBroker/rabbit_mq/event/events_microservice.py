@@ -5,6 +5,7 @@ class BotBaseEvent:
 class AnalyzerBaseEvent:
     RUN = "RUN"
     SAVE = "SAVE"
+    RUN_ONCE = "RUN_ONCE"
 
 
 class ServerEvent:
@@ -18,5 +19,5 @@ class DiscordBotEvent:
 
 class DiscordAnalyzerEvent:
     RUN = AnalyzerBaseEvent.RUN  ## RECOMPUTE
-    RUN_ONCE = "RUN_ONCE"
+    RUN_ONCE = AnalyzerBaseEvent.RUN_ONCE
     # SAVE = AnalyzerBaseEvent.SAVE

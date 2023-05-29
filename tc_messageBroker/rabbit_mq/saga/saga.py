@@ -11,5 +11,14 @@ class DiscordUpdateChannel(Saga):
             Status.NOT_STARTED,
             data=data,
             created_at=datetime.now(),
-            next=None,
+        )
+
+
+class DiscordScheculedJob(Saga):
+    def __init__(self, data: any) -> None:
+        super().__init__(
+            ChoreographyDict.DISCORD_SCHEDULED_JOB,
+            Status.NOT_STARTED,
+            data=data,
+            created_at=datetime.now(),
         )

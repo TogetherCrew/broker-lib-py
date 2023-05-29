@@ -20,7 +20,12 @@ def test_inputs():
     connection_url = "mongodb://127.0.0.1:27017/"
 
     ## we should have this data before running this test in db
-    saga = get_saga(guildId="993163081939165234", connection_url=connection_url)
+    saga = get_saga(
+        guildId="993163081939165234",
+        connection_url=connection_url,
+        db_name="Saga",
+        collection="saga",
+    )
 
     assert saga.choreography is not None
     assert saga.status in [

@@ -4,6 +4,7 @@ from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
 from datetime import datetime
 from tc_messageBroker.rabbit_mq.status import Status
 
+
 def test_start_tx():
     choreography = IChoreography(
         name="choreography_with_random_tx",
@@ -23,7 +24,6 @@ def test_start_tx():
         assert kwargs["event"] == choreography.transactions[1].event
         assert kwargs["content"]["uuid"] == saga.uuid
 
-
     saga.start(
         publish_method=sample_publish,
         mongo_connection="",
@@ -36,4 +36,3 @@ def test_start_tx():
     assert saga.choreography.transactions[2].status == Status.SUCCESS
     assert saga.choreography.transactions[3].status == Status.FAILED
     assert saga.choreography.transactions[4].status == Status.CANCELLED
-

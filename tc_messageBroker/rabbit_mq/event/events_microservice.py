@@ -17,6 +17,6 @@ class DiscordBotEvent:
 
 
 class DiscordAnalyzerEvent:
-    RUN = AnalyzerBaseEvent.RUN ## RECOMPUTE
+    RUN = AnalyzerBaseEvent.RUN  ## RECOMPUTE
     RUN_ONCE = "RUN_ONCE"
     # SAVE = AnalyzerBaseEvent.SAVE

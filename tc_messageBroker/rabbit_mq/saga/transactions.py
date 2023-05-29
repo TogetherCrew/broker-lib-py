@@ -32,12 +32,12 @@ DISCORD_UPDATE_CHANNELS_TRANSACTIONS = [
 ]
 
 DISCORD_SCHEDULED_JOB_TRANSACTIONS = [
-    ITransaction(
-        Queue.DISCORD_BOT,
-        Event.DISCORD_BOT.FETCH,
-        order=1,
-        status=Status.NOT_STARTED,
-    ),
+    # ITransaction(
+    #     Queue.DISCORD_BOT,
+    #     Event.DISCORD_BOT.FETCH,
+    #     order=1,
+    #     status=Status.NOT_STARTED,
+    # ),
     ITransaction(
         Queue.DISCORD_ANALYZER,
         Event.DISCORD_ANALYZER.RUN_ONCE,

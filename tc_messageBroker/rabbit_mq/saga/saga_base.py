@@ -22,6 +22,34 @@ class Saga:
         self.data = data
         self.created_at = created_at
 
+    def start(
+            self,
+            publish_method: callable,
+            mongo_connection: str,
+            test_mode = False,
+    ):
+        """
+        just publish the first transaction
+        """
+        tx_sorted, _ = self._sort_transactions(
+            self.choreography.transactions
+        )
+        current_tx = tx_sorted[0]
+        self.status = Status.IN_PROGRESS
+
+        self._update_save(
+                transactions=tx_sorted,
+                mongo_connection=mongo_connection,
+                test=test_mode,
+        )
+
+        publish_method(
+                    queue_name=current_tx.queue,
+                    event=current_tx.event,
+                    content={"uuid": self.uuid},
+        )
+
+
     def next(
         self,
         publish_method: callable,

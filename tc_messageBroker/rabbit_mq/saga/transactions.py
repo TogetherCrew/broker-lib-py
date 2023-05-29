@@ -41,7 +41,7 @@ DISCORD_SCHEDULED_JOB_TRANSACTIONS = [
     ITransaction(
         Queue.DISCORD_ANALYZER,
         Event.DISCORD_ANALYZER.RUN_ONCE,
-        order=2,
+        order=1,
         status=Status.NOT_STARTED,
     ),
 ]

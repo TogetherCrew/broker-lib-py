@@ -26,7 +26,7 @@ def test_start_tx():
 
     saga.start(
         publish_method=sample_publish,
-        mongo_connection="",
+        mongo_creds={},
         test_mode=True,
     )
 

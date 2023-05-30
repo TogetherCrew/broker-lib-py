@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     rabbit_mq.connect(Queue.DISCORD_BOT)
 
-    content = {"content": "content_analyzer_publish"}
+    content = {"data": {"guildId": "993163081939165234"}}
 
     rabbit_mq.publish(
         Queue.DISCORD_ANALYZER, event=Event.DISCORD_ANALYZER.RUN, content=content

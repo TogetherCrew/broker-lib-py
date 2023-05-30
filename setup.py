@@ -6,7 +6,7 @@ with open("requirements.txt") as f:
 
 setup(
     name="tc-messageBroker",
-    version="1.1.1",
+    version="1.1.2",
     author="Mohammad Amin Dadgar, RnDAO",
     maintainer="Mohammad Amin Dadgar",
     maintainer_email="dadgaramin96@gmail.com",

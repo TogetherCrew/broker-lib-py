@@ -31,7 +31,7 @@ def test_discord_scheduled_job_tx():
     # assert tx[0].event == Event.DISCORD_BOT.FETCH
     # assert tx[0].status == Status.NOT_STARTED
 
-    assert tx[0].order == 2
+    assert tx[0].order == 1
     assert tx[0].queue == Queue.DISCORD_ANALYZER
     assert tx[0].event == Event.DISCORD_ANALYZER.RUN_ONCE
     assert tx[0].status == Status.NOT_STARTED

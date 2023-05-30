@@ -2,16 +2,11 @@
 from tc_messageBroker.rabbit_mq.saga.transactions import ITransaction
 
 
-def get_transactions(transactions: list[dict[str, any]]) -> list[ITransaction]:
+def get_transactions(transactions: dict[dict[str, any]]) -> list[ITransaction]:
     transactions_obj = []
 
     for tx in transactions.values():
-        event = tx["event"]
-        queue = tx["queue"]
-        order = tx["order"]
-        status = tx["status"]
-
-        transaction = ITransaction(queue=queue, event=event, order=order, status=status)
+        transaction = ITransaction(**tx)
         transactions_obj.append(transaction)
 
     return transactions_obj

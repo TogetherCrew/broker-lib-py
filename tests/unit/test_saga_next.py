@@ -30,7 +30,7 @@ def test_next_single_not_started_tx():
     saga.next(
         publish_method=sample_publish,
         call_function=sample_call,
-        mongo_connection="",
+        mongo_creds={},
         test_mode=True,
     )
 
@@ -66,7 +66,7 @@ def test_next_multiple_not_started_tx():
     saga.next(
         publish_method=sample_publish,
         call_function=sample_call,
-        mongo_connection="",
+        mongo_creds={},
         test_mode=True,
     )
 
@@ -100,7 +100,7 @@ def test_saga_fails():
     saga.next(
         publish_method=sample_publish,
         call_function=sample_call,
-        mongo_connection="",
+        mongo_creds={},
         test_mode=True,
     )
 
@@ -134,7 +134,7 @@ def test_saga_and_transaction_fails():
     saga.next(
         publish_method=sample_publish,
         call_function=sample_call,
-        mongo_connection="",
+        mongo_creds={},
         test_mode=True,
     )
 

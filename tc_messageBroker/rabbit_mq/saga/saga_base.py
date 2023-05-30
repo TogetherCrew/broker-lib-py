@@ -1,10 +1,12 @@
 from .choreography_base import IChoreography
 from .transaction_base import ITransaction
+from .utils.saga_base_utils import get_transactions, convert_tx_dict
 from tc_messageBroker.rabbit_mq.status import Status
 import uuid
 from datetime import datetime
 import numpy as np
 from tc_messageBroker.rabbit_mq.db_operations import MongoDB
+import logging
 
 
 class Saga:
@@ -25,7 +27,7 @@ class Saga:
     def start(
         self,
         publish_method: callable,
-        mongo_connection: str,
+        mongo_creds: dict[str, any],
         test_mode=False,
     ):
         """
@@ -37,7 +39,7 @@ class Saga:
 
         self._update_save(
             transactions=tx_sorted,
-            mongo_connection=mongo_connection,
+            mongo_creds=mongo_creds,
             test=test_mode,
         )
 
@@ -51,7 +53,7 @@ class Saga:
         self,
         publish_method: callable,
         call_function: callable,
-        mongo_connection: str,
+        mongo_creds: dict[str, any],
         test_mode=False,
     ):
         """
@@ -64,8 +66,9 @@ class Saga:
             the publish methods that are from the RabbitMQ
         call_function : callable
             a function to be called when the message recieved
-        mongo_connection : str
-            the mongodb connection url to update the db
+        mongo_creds : dict[str, any]
+            the mongodb credentials to update the db
+            the keys must be `connection_str`, `db_name`, and `collection_name`
         test_mode : bool
             testing the function indicates that we wouldn't read or write on DB
             default is False
@@ -83,7 +86,7 @@ class Saga:
         current_tx.start = datetime.now()
 
         self._update_save(
-            transactions=tx_sorted, mongo_connection=mongo_connection, test=test_mode
+            transactions=tx_sorted, mongo_creds=mongo_creds, test=test_mode
         )
 
         try:
@@ -108,7 +111,7 @@ class Saga:
 
             self._update_save(
                 transactions=tx_sorted,
-                mongo_connection=mongo_connection,
+                mongo_creds=mongo_creds,
                 test=test_mode,
             )
 
@@ -122,7 +125,7 @@ class Saga:
 
             self._update_save(
                 transactions=tx_sorted,
-                mongo_connection=mongo_connection,
+                mongo_creds=mongo_creds,
                 test=test_mode,
             )
 
@@ -184,7 +187,7 @@ class Saga:
         return np.array(transactions)[sorted_indices]
 
     def _update_save(
-        self, transactions: list[ITransaction], mongo_connection, test=False
+        self, transactions: list[ITransaction], mongo_creds: dict[str, any], test=False
     ):
         """
         update the transactions in saga choreography and then save data to db
@@ -194,8 +197,9 @@ class Saga:
         """
         if not test:
             ## save the status into DB
-            mongodb = MongoDB(mongo_connection)
-            mongodb.connect()
+            mongodb = self._get_mongo_db(
+                mongo_creds=mongo_creds,
+            )
             data = self._create_data()
 
             ## creating a duplicate choreography to avoid shallow copy
@@ -221,7 +225,13 @@ class Saga:
         """
         data = {}
 
-        data["choreography"] = self.choreography
+        data["choreography"] = {}
+        data["choreography"]["name"] = self.choreography.name
+        data["choreography"]["transactions"] = {}
+        for idx, tx in enumerate(self.choreography.transactions):
+            transaction = convert_tx_dict(tx)
+            data["choreography"]["transactions"][str(idx)] = transaction
+
         data["status"] = self.status
         data["data"] = self.data
         data["sagaId"] = self.uuid
@@ -229,6 +239,19 @@ class Saga:
         data["updatedAt"] = datetime.now()
 
         return data
+
+    def _get_mongo_db(self, mongo_creds: dict[str, any], test=False):
+        """
+        get mongodb instance
+        """
+        ## save the status into DB
+        mongodb = MongoDB(
+            connection_str=mongo_creds["connection_str"],
+            db_name=mongo_creds["db_name"],
+            collection_name=mongo_creds["collection_name"],
+        )
+        mongodb.connect()
+        return mongodb
 
 
 def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
@@ -258,12 +281,23 @@ def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
 
     data = mongodb.read(query={"data.guildId": guildId}, count=1)
 
-    saga_obj = Saga(
-        choreography=data["choreography"],
-        status=data["status"],
-        created_at=data["createdAt"],
-        sagaId=data["sagaId"],
-        data=data["data"],
+    transactions = get_transactions(data["choreography"]["transactions"])
+
+    choreography = IChoreography(
+        name=data["choreography"]["name"],
+        transactions=transactions,
     )
+
+    saga_obj = None
+    if data is not None:
+        saga_obj = Saga(
+            choreography=choreography,
+            status=data["status"],
+            created_at=data["createdAt"],
+            sagaId=data["sagaId"],
+            data=data["data"],
+        )
+    else:
+        logging.error("Error! no saga available for this!")
 
     return saga_obj

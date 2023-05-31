@@ -89,7 +89,7 @@ def test_get_transactions_length():
     order = 1
     status = "STATUS"
 
-    transactions = {}
+    transactions = []
     loop_iter = 2
     for i in range(loop_iter):
         tx = {}
@@ -98,7 +98,7 @@ def test_get_transactions_length():
         tx["order"] = order + i
         tx["status"] = status + str(i)
 
-        transactions[str(i)] = tx
+        transactions.append(tx)
 
     transactions_obj = get_transactions(transactions)
 
@@ -111,7 +111,7 @@ def test_get_transactions_obj():
     order = 1
     status = "STATUS"
 
-    transactions = {}
+    transactions = []
     loop_iter = 2
     for i in range(loop_iter):
         tx = {}
@@ -120,7 +120,7 @@ def test_get_transactions_obj():
         tx["order"] = order + i
         tx["status"] = status + str(i)
 
-        transactions[str(i)] = tx
+        transactions.append(tx)
 
     transactions_obj = get_transactions(transactions)
 

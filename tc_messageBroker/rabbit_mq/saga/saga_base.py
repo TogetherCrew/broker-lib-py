@@ -227,10 +227,10 @@ class Saga:
 
         data["choreography"] = {}
         data["choreography"]["name"] = self.choreography.name
-        data["choreography"]["transactions"] = {}
-        for idx, tx in enumerate(self.choreography.transactions):
+        data["choreography"]["transactions"] = []
+        for tx in self.choreography.transactions:
             transaction = convert_tx_dict(tx)
-            data["choreography"]["transactions"][str(idx)] = transaction
+            data["choreography"]["transactions"].append(transaction)
 
         data["status"] = self.status
         data["data"] = self.data
@@ -281,15 +281,14 @@ def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
 
     data = mongodb.read(query={"data.guildId": guildId}, count=1)
 
-    transactions = get_transactions(data["choreography"]["transactions"])
-
-    choreography = IChoreography(
-        name=data["choreography"]["name"],
-        transactions=transactions,
-    )
-
     saga_obj = None
     if data is not None:
+        transactions = get_transactions(data["choreography"]["transactions"])
+
+        choreography = IChoreography(
+            name=data["choreography"]["name"],
+            transactions=transactions,
+        )
         saga_obj = Saga(
             choreography=choreography,
             status=data["status"],

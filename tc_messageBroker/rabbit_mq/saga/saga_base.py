@@ -282,7 +282,7 @@ def get_saga(sagaId: str, connection_url: str, db_name: str, collection: str):
     data = mongodb.read(query={"sagaId": sagaId}, count=1)
 
     saga_obj = None
-    if data is not None:
+    try:
         transactions = get_transactions(data["choreography"]["transactions"])
 
         choreography = IChoreography(
@@ -296,7 +296,7 @@ def get_saga(sagaId: str, connection_url: str, db_name: str, collection: str):
             sagaId=data["sagaId"],
             data=data["data"],
         )
-    else:
-        logging.error("Error! no saga available for this!")
+    except Exception as exp:
+        logging.error(f"Error occured! Exception: {exp}")
 
     return saga_obj

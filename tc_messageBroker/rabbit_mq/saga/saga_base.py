@@ -254,14 +254,14 @@ class Saga:
         return mongodb
 
 
-def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
+def get_saga(sagaId: str, connection_url: str, db_name: str, collection: str):
     """
     get saga object for a special guild
 
     Parameters:
     ------------
-    guildId : str
-        the guildId which the saga belongs to
+    sagaId : str
+        the sagaId which the saga belongs to
     connection_url : str
         the connection to db which the saga architecture is saved
     db_name : str
@@ -279,7 +279,7 @@ def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
     )
     mongodb.connect()
 
-    data = mongodb.read(query={"data.guildId": guildId}, count=1)
+    data = mongodb.read(query={"sagaId": sagaId}, count=1)
 
     saga_obj = None
     if data is not None:

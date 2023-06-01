@@ -21,7 +21,7 @@ def test_inputs():
 
     ## we should have this data before running this test in db
     saga = get_saga(
-        guildId="993163081939165234",
+        sagaId="something",
         connection_url=connection_url,
         db_name="Saga",
         collection="saga",

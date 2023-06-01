@@ -11,9 +11,8 @@ choreography_schema = {
                     "type": "string",
                 },
                 "transactions": {
-                    "type": "object",
-                    "patternProperties": {
-                        "^[0-9]+$": {
+                    "type": "array",
+                    "items": {
                             "type": "object",
                             "properties": {
                                 "queue": {"type": "string"},
@@ -37,7 +36,6 @@ choreography_schema = {
                             },
                             "required": ["queue", "event", "order", "status"],
                             "additionalProperties": False,
-                        }
                     },
                     "additionalProperties": False,
                 },

@@ -5,7 +5,7 @@ from tc_messageBroker.rabbit_mq.saga.transactions import ITransaction
 def get_transactions(transactions: dict[dict[str, any]]) -> list[ITransaction]:
     transactions_obj = []
 
-    for tx in transactions.values():
+    for tx in transactions:
         transaction = ITransaction(**tx)
         transactions_obj.append(transaction)
 

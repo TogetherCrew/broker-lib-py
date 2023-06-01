@@ -227,10 +227,10 @@ class Saga:
 
         data["choreography"] = {}
         data["choreography"]["name"] = self.choreography.name
-        data["choreography"]["transactions"] = {}
-        for idx, tx in enumerate(self.choreography.transactions):
+        data["choreography"]["transactions"] = []
+        for tx in self.choreography.transactions:
             transaction = convert_tx_dict(tx)
-            data["choreography"]["transactions"][str(idx)] = transaction
+            data["choreography"]["transactions"].append(transaction)
 
         data["status"] = self.status
         data["data"] = self.data
@@ -254,14 +254,14 @@ class Saga:
         return mongodb
 
 
-def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
+def get_saga(sagaId: str, connection_url: str, db_name: str, collection: str):
     """
     get saga object for a special guild
 
     Parameters:
     ------------
-    guildId : str
-        the guildId which the saga belongs to
+    sagaId : str
+        the sagaId which the saga belongs to
     connection_url : str
         the connection to db which the saga architecture is saved
     db_name : str
@@ -279,17 +279,16 @@ def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
     )
     mongodb.connect()
 
-    data = mongodb.read(query={"data.guildId": guildId}, count=1)
-
-    transactions = get_transactions(data["choreography"]["transactions"])
-
-    choreography = IChoreography(
-        name=data["choreography"]["name"],
-        transactions=transactions,
-    )
+    data = mongodb.read(query={"sagaId": sagaId}, count=1)
 
     saga_obj = None
-    if data is not None:
+    try:
+        transactions = get_transactions(data["choreography"]["transactions"])
+
+        choreography = IChoreography(
+            name=data["choreography"]["name"],
+            transactions=transactions,
+        )
         saga_obj = Saga(
             choreography=choreography,
             status=data["status"],
@@ -297,7 +296,7 @@ def get_saga(guildId: str, connection_url: str, db_name: str, collection: str):
             sagaId=data["sagaId"],
             data=data["data"],
         )
-    else:
-        logging.error("Error! no saga available for this!")
+    except Exception as exp:
+        logging.error(f"Error occured! Exception: {exp}")
 
     return saga_obj

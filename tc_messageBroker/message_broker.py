@@ -55,7 +55,7 @@ class RabbitMQ:
                     host=amqpServer,
                     port=self.port,
                     credentials=credentials,
-                    heartbeat=600,
+                    heartbeat=0, ## disabling the heartbeat
                 ),
             )
             self.channel = self.connection.channel()

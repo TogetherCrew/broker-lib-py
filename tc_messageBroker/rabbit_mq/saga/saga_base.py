@@ -116,6 +116,7 @@ class Saga:
             )
 
         except Exception as exp:
+            logging.info(f"Error occured during the next function. Exception: {exp}")
             current_tx.error = str(exp)
 
             if current_tx.status != Status.SUCCESS:

@@ -29,7 +29,12 @@ class RabbitMQ:
             cls.instance = super(RabbitMQ, cls).__new__(cls)
         return cls.instance
 
-    def connect(self, queue_name: str, consume_options: dict = None) -> bool:
+    def connect(
+            self, 
+            queue_name: str, 
+            consume_options: dict = None,
+            heartbeat: int = 600
+        ) -> bool:
         """
         connect the rabbitMQ broker and start consuming
 
@@ -40,6 +45,9 @@ class RabbitMQ:
         consume_options : dict
             additional arguments for basic_consume method
             default is `None`
+        heartbeat : int
+            the number of seconds for a message to stay alive
+            default is 600 seconds
 
         Returns:
         ---------
@@ -55,7 +63,7 @@ class RabbitMQ:
                     host=amqpServer,
                     port=self.port,
                     credentials=credentials,
-                    heartbeat=0, ## disabling the heartbeat
+                    heartbeat=heartbeat, ## disabling the heartbeat
                 ),
             )
             self.channel = self.connection.channel()

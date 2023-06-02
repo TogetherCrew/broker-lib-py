@@ -4,6 +4,7 @@ import pika
 import logging
 from datetime import datetime
 import json
+import functools
 
 
 class RabbitMQ:
@@ -51,7 +52,10 @@ class RabbitMQ:
             amqpServer = self.broker_url
             self.connection = pika.BlockingConnection(
                 pika.ConnectionParameters(
-                    host=amqpServer, port=self.port, credentials=credentials
+                    host=amqpServer,
+                    port=self.port,
+                    credentials=credentials,
+                    heartbeat=600,
                 ),
             )
             self.channel = self.connection.channel()
@@ -93,10 +97,21 @@ class RabbitMQ:
 
         if event not in self.event_function.keys():
             logging.info(" An Event was received that doesn't exist")
-            self.channel.basic_reject(delivery_tag=method.delivery_tag, requeue=True)
+            self.connection.add_callback_threadsafe(
+                functools.partial(
+                    self.channel.basic_reject,
+                    delivery_tag=method.delivery_tag,
+                    requeue=True,
+                )
+            )
         else:
             self.event_function[event](body_serialized)
-            self.channel.basic_ack(delivery_tag=method.delivery_tag)
+            self.connection.add_callback_threadsafe(
+                functools.partial(
+                    self.channel.basic_ack,
+                    delivery_tag=method.delivery_tag,
+                )
+            )
 
     def consume(self, queue_name: str, consume_options: dict = None):
         """
@@ -108,6 +123,7 @@ class RabbitMQ:
             queue=queue_name,
             on_message_callback=self._consume_callback,
             arguments=consume_options,
+            auto_ack=False,
         )
 
     def publish(

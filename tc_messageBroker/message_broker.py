@@ -33,7 +33,7 @@ class RabbitMQ:
             self, 
             queue_name: str, 
             consume_options: dict = None,
-            heartbeat: int = 600
+            heartbeat: int = 60
         ) -> bool:
         """
         connect the rabbitMQ broker and start consuming
@@ -47,7 +47,7 @@ class RabbitMQ:
             default is `None`
         heartbeat : int
             the number of seconds for a message to stay alive
-            default is 600 seconds
+            default is 60 seconds
 
         Returns:
         ---------

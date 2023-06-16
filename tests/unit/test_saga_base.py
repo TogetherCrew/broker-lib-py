@@ -155,7 +155,6 @@ def test_saga_create_data():
         assert predefined_tx.runtime is None
         assert predefined_tx.error is None
 
-    # assert saga_dict["choreography"]["transactions"] == ChoreographyDict.DISCORD_UPDATE_CHANNELS.transactions
     assert saga_dict["status"] == Status.NOT_STARTED
     assert saga_dict["data"] == saga_data
     assert saga_dict["sagaId"] == saga.uuid

@@ -116,23 +116,25 @@ def test_choreagraphy_sorting_status_random_choreogprahy():
         else:
             condition = True
 
+
 def test_saga_create_data():
-    saga_data = {
-        "guild": "some_guildId"
-    }
+    saga_data = {"guild": "some_guildId"}
     creation_date = datetime.now()
 
     saga = Saga(
         ChoreographyDict.DISCORD_UPDATE_CHANNELS,
         Status.NOT_STARTED,
-        data = saga_data,
-        created_at = creation_date,
+        data=saga_data,
+        created_at=creation_date,
     )
 
     saga_dict = saga._create_data()
 
-    assert saga_dict["choreography"]["name"] == ChoreographyDict.DISCORD_UPDATE_CHANNELS.name
-    
+    assert (
+        saga_dict["choreography"]["name"]
+        == ChoreographyDict.DISCORD_UPDATE_CHANNELS.name
+    )
+
     ## we had a list of transactions
     for idx, tx in enumerate(saga_dict["choreography"]["transactions"]):
         predefined_tx = ChoreographyDict.DISCORD_UPDATE_CHANNELS.transactions[idx]
@@ -152,7 +154,6 @@ def test_saga_create_data():
         assert predefined_tx.message is None
         assert predefined_tx.runtime is None
         assert predefined_tx.error is None
-
 
     # assert saga_dict["choreography"]["transactions"] == ChoreographyDict.DISCORD_UPDATE_CHANNELS.transactions
     assert saga_dict["status"] == Status.NOT_STARTED

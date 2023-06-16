@@ -30,11 +30,8 @@ class RabbitMQ:
         return cls.instance
 
     def connect(
-            self, 
-            queue_name: str, 
-            consume_options: dict = None,
-            heartbeat: int = 60
-        ) -> bool:
+        self, queue_name: str, consume_options: dict = None, heartbeat: int = 60
+    ) -> bool:
         """
         connect the rabbitMQ broker and start consuming
 
@@ -63,7 +60,7 @@ class RabbitMQ:
                     host=amqpServer,
                     port=self.port,
                     credentials=credentials,
-                    heartbeat=heartbeat, ## disabling the heartbeat
+                    heartbeat=heartbeat,  ## disabling the heartbeat
                 ),
             )
             self.channel = self.connection.channel()

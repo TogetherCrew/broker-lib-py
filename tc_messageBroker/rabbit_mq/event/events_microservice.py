@@ -15,6 +15,7 @@ class ServerEvent:
 class DiscordBotEvent:
     FETCH = BotBaseEvent.FETCH
     SEND_MESSAGE = "SEND_MESSAGE"
+    FETCH_MEMBERS = "FETCH_MEMBERS"
 
 
 class DiscordAnalyzerEvent:

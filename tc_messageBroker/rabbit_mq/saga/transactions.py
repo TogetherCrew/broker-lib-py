@@ -45,3 +45,12 @@ DISCORD_SCHEDULED_JOB_TRANSACTIONS = [
         status=Status.NOT_STARTED,
     ),
 ]
+
+DISCORD_FETCH_MEMBERS_TRANSACTIONS = [
+    ITransaction(
+        Queue.DISCORD_BOT,
+        Event.DISCORD_BOT.FETCH_MEMBERS,
+        order=1,
+        status=Status.NOT_STARTED,
+    )
+]

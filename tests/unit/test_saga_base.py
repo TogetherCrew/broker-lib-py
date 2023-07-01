@@ -115,3 +115,48 @@ def test_choreagraphy_sorting_status_random_choreogprahy():
             assert condition is False
         else:
             condition = True
+
+
+def test_saga_create_data():
+    saga_data = {"guild": "some_guildId"}
+    creation_date = datetime.now()
+
+    saga = Saga(
+        ChoreographyDict.DISCORD_UPDATE_CHANNELS,
+        Status.NOT_STARTED,
+        data=saga_data,
+        created_at=creation_date,
+    )
+
+    saga_dict = saga._create_data()
+
+    assert (
+        saga_dict["choreography"]["name"]
+        == ChoreographyDict.DISCORD_UPDATE_CHANNELS.name
+    )
+
+    ## we had a list of transactions
+    for idx, tx in enumerate(saga_dict["choreography"]["transactions"]):
+        predefined_tx = ChoreographyDict.DISCORD_UPDATE_CHANNELS.transactions[idx]
+        assert tx["queue"] == predefined_tx.queue
+        assert tx["event"] == predefined_tx.event
+        assert tx["order"] == predefined_tx.order
+        assert tx["status"] == predefined_tx.status
+        ## these should be not defined in predefine transaction
+        assert "start" not in tx.keys()
+        assert "end" not in tx.keys()
+        assert "runtime" not in tx.keys()
+        assert "message" not in tx.keys()
+        assert "error" not in tx.keys()
+
+        assert predefined_tx.start is None
+        assert predefined_tx.end is None
+        assert predefined_tx.message is None
+        assert predefined_tx.runtime is None
+        assert predefined_tx.error is None
+
+    assert saga_dict["status"] == Status.NOT_STARTED
+    assert saga_dict["data"] == saga_data
+    assert saga_dict["sagaId"] == saga.uuid
+    assert saga_dict["createdAt"] == creation_date
+    assert saga_dict["updatedAt"] is not None

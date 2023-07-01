@@ -10,7 +10,7 @@ from tc_messageBroker.rabbit_mq.status import Status
 def test_discord_update_channels_tx():
     tx = DISCORD_UPDATE_CHANNELS_TRANSACTIONS
 
-    assert len(tx) == 2
+    assert len(tx) == 3
     assert tx[0].order == 1
     assert tx[0].queue == Queue.DISCORD_BOT
     assert tx[0].event == Event.DISCORD_BOT.FETCH
@@ -20,6 +20,11 @@ def test_discord_update_channels_tx():
     assert tx[1].queue == Queue.DISCORD_ANALYZER
     assert tx[1].event == Event.DISCORD_ANALYZER.RUN
     assert tx[1].status == Status.NOT_STARTED
+
+    assert tx[2].order == 3
+    assert tx[2].queue == Queue.DISCORD_BOT
+    assert tx[2].event == Event.DISCORD_BOT.SEND_MESSAGE
+    assert tx[2].status == Status.NOT_STARTED
 
 
 def test_discord_scheduled_job_tx():

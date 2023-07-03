@@ -16,8 +16,8 @@ def test_queue_declare_empty_params():
         queue_auto_delete
     ) = messageBroker._get_declare_queue_param(kwargs)
     
-    assert queue_durability == True
-    assert queue_auto_delete == False
+    assert queue_durability is True
+    assert queue_auto_delete is False
 
 def test_queue_declare_auto_delete_params():
     url = "localhost"
@@ -38,8 +38,8 @@ def test_queue_declare_auto_delete_params():
         queue_auto_delete
     ) = messageBroker._get_declare_queue_param(kwargs)
     
-    assert queue_durability == True
-    assert queue_auto_delete == True
+    assert queue_durability is True
+    assert queue_auto_delete is True
 
 def test_queue_declare_all_params():
     url = "localhost"
@@ -61,8 +61,8 @@ def test_queue_declare_all_params():
         queue_auto_delete
     ) = messageBroker._get_declare_queue_param(kwargs)
     
-    assert queue_durability == False
-    assert queue_auto_delete == True
+    assert queue_durability is False
+    assert queue_auto_delete is True
 
 
 def test_queue_declare_all_params_second():
@@ -85,8 +85,8 @@ def test_queue_declare_all_params_second():
         queue_auto_delete
     ) = messageBroker._get_declare_queue_param(kwargs)
     
-    assert queue_durability == False
-    assert queue_auto_delete == False
+    assert queue_durability is False
+    assert queue_auto_delete is False
 
 
 

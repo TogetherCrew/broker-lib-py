@@ -179,7 +179,7 @@ class RabbitMQ:
         )
 
     def publish(
-        self, queue_name: str, event: str, content: dict, options: any = None, **kwargs
+        self, queue_name: str, event: str, content: dict, options: any = None
     ) -> None:
         """
         Publish a specific message to a specific queue directly

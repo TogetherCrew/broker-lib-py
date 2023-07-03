@@ -30,7 +30,11 @@ class RabbitMQ:
         return cls.instance
 
     def connect(
-        self, queue_name: str, consume_options: dict = None, heartbeat: int = 60
+        self,
+        queue_name: str,
+        consume_options: dict = None,
+        heartbeat: int = 60,
+        **kwargs,
     ) -> bool:
         """
         connect the rabbitMQ broker and start consuming
@@ -45,6 +49,13 @@ class RabbitMQ:
         heartbeat : int
             the number of seconds for a message to stay alive
             default is 60 seconds
+        **kwargs :
+            queue_durable : bool
+                is the queue durable or not
+                default is True
+            queue_auto_delete : bool
+                Deleting the queue after the consumer cancels or disconnect
+                default is False
 
         Returns:
         ---------
@@ -67,7 +78,7 @@ class RabbitMQ:
 
             # make sure that the channel is created,
             # if not this statement will create it
-            self.channel.queue_declare(queue=queue_name)
+            self._queue_declare(queue_name=queue_name, kwargs=kwargs)
 
             self.channel.basic_consume(
                 queue=queue_name,
@@ -79,6 +90,33 @@ class RabbitMQ:
         except Exception as exp:
             logging.error(f" Something went wrong with RabbitMQ {exp}")
             return False
+
+    def _get_declare_queue_param(self, kwargs):
+        """
+        kwargs must have `queue_auto_delete`, and `queue_durability`
+        or must not have, other kwargs would be skipped
+
+        Returns:
+        -----------
+        queue_durability : bool
+            the queue durability over rabbitMQ getting down
+        queue_auto_delete : bool
+            to delete or not delete the queue
+            if consumer disconnects or cancells consuming
+        """
+        queue_durability = None
+        if "queue_durable" in kwargs.keys():
+            queue_durability = kwargs["queue_durable"]
+        else:
+            queue_durability = True
+
+        queue_auto_delete = None
+        if "queue_auto_delete" in kwargs.keys():
+            queue_auto_delete = kwargs["queue_auto_delete"]
+        else:
+            queue_auto_delete = False
+
+        return queue_durability, queue_auto_delete
 
     def _consume_callback(self, ch, method, properties, body) -> bool:
         """
@@ -118,11 +156,20 @@ class RabbitMQ:
                 )
             )
 
-    def consume(self, queue_name: str, consume_options: dict = None):
+    def consume(self, queue_name: str, consume_options: dict = None, **kwargs):
         """
         set consuming events from a queue
+        queue_name : str
+            the queue name to consume
+        **kwargs :
+            queue_durable : bool
+                is the queue durable or not
+                default is True
+            queue_auto_delete : bool
+                Deleting the queue after the consumer cancels or disconnect
+                default is False
         """
-        self.channel.queue_declare(queue=queue_name)
+        self._queue_declare(queue_name=queue_name, kwargs=kwargs)
 
         self.channel.basic_consume(
             queue=queue_name,
@@ -152,8 +199,6 @@ class RabbitMQ:
 
         """
         data = self._define_data(event=event, content=content)
-
-        self.channel.queue_declare(queue=queue_name)
 
         self.channel.basic_publish(
             exchange=self.exchange_name,
@@ -227,8 +272,31 @@ class RabbitMQ:
         )
         self.exchange_name = name
 
+    def _queue_declare(self, queue_name: str, **kwargs):
+        """
+        declare the queue
+
+        Parameters:
+        --------------
+        queue_name : str
+        **kwargs :
+            queue_durable : bool
+                is the queue durable or not
+                default is True
+            queue_auto_delete : bool
+                Deleting the queue after the consumer cancels or disconnect
+                default is False
+        """
+        (queue_durability, queue_auto_delete) = self._get_declare_queue_param(kwargs)
+
+        # make sure that the channel is created,
+        # if not this statement will create it
+        self.channel.queue_declare(
+            queue=queue_name, durable=queue_durability, auto_delete=queue_auto_delete
+        )
+
     def bind_queue_to_exchange(
-        self, queue_name: str, exchange_name: str, pattern: str
+        self, queue_name: str, exchange_name: str, pattern: str, **kwargs
     ) -> None:
         """
         bind a queue to a special exchange point
@@ -241,8 +309,16 @@ class RabbitMQ:
             the exchange point name
         pattern : str
             routing_key of the queue
+        **kwargs :
+            queue_durable : bool
+                is the queue durable or not
+                default is True
+            queue_auto_delete : bool
+                Deleting the queue after the consumer cancels or disconnect
+                default is False
         """
-        self.channel.queue_declare(queue=queue_name)
+
+        self._queue_declare(queue_name=queue_name, kwargs=kwargs)
 
         self.channel.queue_bind(
             queue=queue_name, exchange=exchange_name, routing_key=pattern

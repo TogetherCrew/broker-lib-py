@@ -3,7 +3,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/fb4c44e3858c76cab905/maintainability)](https://codeclimate.com/github/RnDAO/tc-messageBrokerPython/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/fb4c44e3858c76cab905/test_coverage)](https://codeclimate.com/github/RnDAO/tc-messageBrokerPython/test_coverage)
 
-RabbitMQ message broker library for python
+RabbitMQ library written in Python. Responsible for brokering messages between different services.
 
 ## Installation
 To install the library first clone the code and then follow the instruction below

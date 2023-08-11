@@ -1,8 +1,8 @@
 import functools
 import json
-# from typing import Callable
 import logging
 from datetime import datetime
+from typing import Any, Optional
 
 import pika
 
@@ -19,9 +19,9 @@ class RabbitMQ:
 
         # it will use the default exchange point if not created
         self.exchange_name = ""
-        self.channel = None
-        self.connection = None
-        self.event_function = {}
+        self.channel: Optional[pika.adapters.blocking_connection.BlockingChannel] = None
+        self.connection: Optional[pika.BlockingConnection] = None
+        self.event_function: dict[str, Any] = {}
 
     def __new__(cls, broker_url: str, port: int, username: str, password: str):
         # making it singleton
@@ -32,7 +32,7 @@ class RabbitMQ:
     def connect(
         self,
         queue_name: str,
-        consume_options: dict = None,
+        consume_options: Optional[dict[str, Any]] = None,
         heartbeat: int = 60,
         **kwargs,
     ) -> bool:
@@ -118,7 +118,7 @@ class RabbitMQ:
 
         return queue_durability, queue_auto_delete
 
-    def _consume_callback(self, ch, method, properties, body) -> bool:
+    def _consume_callback(self, ch, method, properties, body) -> None:
         """
         consume a message with a specific body
 
@@ -129,11 +129,6 @@ class RabbitMQ:
         body : dict[str, any]
             the dictionary containing the body of message to be consumed
 
-        Returns:
-        ---------
-        is_successful : bool
-            if True, the event function was called
-            otherwise would return False and requeue the message
         """
         body_serialized = json.loads(body)
         event = body_serialized["event"]

@@ -11,8 +11,9 @@ from dotenv import load_dotenv
 from tc_messageBroker.rabbit_mq.db_operations import MongoDB
 from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
 from tc_messageBroker.rabbit_mq.saga.saga_base import Saga, get_saga
-from tc_messageBroker.rabbit_mq.saga.transactions import \
-    DISCORD_UPDATE_CHANNELS_TRANSACTIONS
+from tc_messageBroker.rabbit_mq.saga.transactions import (
+    DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
+)
 from tc_messageBroker.rabbit_mq.status import Status
 
 

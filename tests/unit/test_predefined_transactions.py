@@ -1,8 +1,10 @@
 from tc_messageBroker.rabbit_mq.event import Event
 from tc_messageBroker.rabbit_mq.queue import Queue
 from tc_messageBroker.rabbit_mq.saga.transactions import (
-    DISCORD_FETCH_MEMBERS_TRANSACTIONS, DISCORD_SCHEDULED_JOB_TRANSACTIONS,
-    DISCORD_UPDATE_CHANNELS_TRANSACTIONS)
+    DISCORD_FETCH_MEMBERS_TRANSACTIONS,
+    DISCORD_SCHEDULED_JOB_TRANSACTIONS,
+    DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
+)
 from tc_messageBroker.rabbit_mq.status import Status
 
 

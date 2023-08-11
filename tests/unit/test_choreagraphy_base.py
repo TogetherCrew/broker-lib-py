@@ -1,8 +1,6 @@
 from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
 from tc_messageBroker.rabbit_mq.saga.transactions import (
-    DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
-    DISCORD_SCHEDULED_JOB_TRANSACTIONS,
-)
+    DISCORD_SCHEDULED_JOB_TRANSACTIONS, DISCORD_UPDATE_CHANNELS_TRANSACTIONS)
 
 
 def test_choreography_discord_update_channels_no_inputs():

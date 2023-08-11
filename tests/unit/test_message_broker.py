@@ -1,14 +1,20 @@
-from tc_messageBroker import RabbitMQ
-from tc_messageBroker.rabbit_mq.queue import Queue
-from tc_messageBroker.rabbit_mq.event import Event
+import os
+
 import pytest
+from dotenv import load_dotenv
+
+from tc_messageBroker import RabbitMQ
+from tc_messageBroker.rabbit_mq.event import Event
+from tc_messageBroker.rabbit_mq.queue import Queue
 
 
 def test_tc_message_broker_default_mode():
-    url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=url, port=port, username=username, password=password
@@ -18,10 +24,12 @@ def test_tc_message_broker_default_mode():
 
 
 def test_tc_message_broker_empty_url():
-    url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=url, port=port, username=username, password=password
@@ -31,10 +39,12 @@ def test_tc_message_broker_empty_url():
 
 
 def test_tc_message_broker_singleton():
-    url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=url, port=port, username=username, password=password
@@ -70,12 +80,15 @@ def test_tc_message_broker_set_on_event():
     test the adding on event function
     """
 
-    callback_func = lambda: 2 * 3
+    def callback_func():
+        return 2 * 3
 
-    url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=url, port=port, username=username, password=password
@@ -85,30 +98,33 @@ def test_tc_message_broker_set_on_event():
     messageBroker.on_event(event_name="some_event", on_message=callback_func)
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
-)
 def test_connection_rabbit_mq():
-    broker_url = "localhost"
+    load_dotenv()
 
-    rabbit_mq = RabbitMQ(broker_url=broker_url)
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
+
+    rabbit_mq = RabbitMQ(
+        broker_url=url, port=port, username=username, password=password
+    )
     success = rabbit_mq.connect("test_queue")
     rabbit_mq.connection.close()
 
     assert success is True
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (RabbitMQ instance not available)"
-)
 def test_consume_publish_no_event():
     """
     consume an event which does not exists
     """
-    url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     rabbit_mq = RabbitMQ(
         broker_url=url, port=port, username=username, password=password
@@ -127,16 +143,18 @@ def test_consume_publish_no_event():
 
 
 @pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (start_consuming woudn't stop and test wouldn't end)"  # flake8: noqa
+    reason="Unable to run test (start_consuming woudn't stop and test wouldn't end)"
 )
 def test_consume_publish_with_event():
     """
     consume an event which does not exists
     """
-    url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     rabbit_mq = RabbitMQ(
         broker_url=url, port=port, username=username, password=password

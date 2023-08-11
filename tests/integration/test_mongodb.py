@@ -1,16 +1,27 @@
-from tc_messageBroker.rabbit_mq.db_operations import MongoDB
-from uuid import uuid1
-from numpy.random import randint
+import os
 from copy import deepcopy
 from datetime import datetime, timedelta
-import pytest
+
+from dotenv import load_dotenv
+from numpy.random import randint
+
+from tc_messageBroker.rabbit_mq.db_operations import MongoDB
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_insert_one():
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
     mongodb.connect()
 
     data = create_random_data()
@@ -18,11 +29,19 @@ def test_insert_one():
     mongodb.write(data=[data])
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_insert_multiple():
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
     mongodb.connect()
 
     documents = []
@@ -33,17 +52,33 @@ def test_insert_multiple():
     mongodb.write(data=documents)
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_read_count_one():
     """
     read from db after writing using the previous function (above)
     """
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
     mongodb.connect()
 
+    mongodb.client[db_name].drop_collection(collection_name)
+    mongodb.client[db_name].create_collection(collection_name)
+    data = create_random_data()
+
+    mongodb.write(data=[data])
+    print(f"data is: {data}")
+
     results = mongodb.read(query={}, count=1)
+    print(f"results: {results}")
 
     assert isinstance(results, dict) is True
     assert "choreography" in results.keys()
@@ -54,17 +89,34 @@ def test_read_count_one():
     assert "updatedAt" in results.keys()
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_read_count_multiple():
     """
     read from db after writing using the previous function (above)
     """
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
     mongodb.connect()
+    mongodb.client[db_name].drop_collection(collection_name)
+    mongodb.client[db_name].create_collection(collection_name)
 
+    documents = []
     data_count = 5
+    for _ in range(data_count):
+        data = create_random_data()
+        documents.append(data)
+
+    mongodb.write(data=documents)
+
     results = mongodb.read(query={}, count=data_count)
 
     assert isinstance(results, list) is True
@@ -79,20 +131,29 @@ def test_read_count_multiple():
         assert "updatedAt" in results[i].keys()
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_replace():
     """
     test replacing a document we just inserted
     """
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
     mongodb.connect()
+    mongodb.client[db_name].drop_collection(collection_name)
+    mongodb.client[db_name].create_collection(collection_name)
 
     data = create_random_data()
 
     mongodb.write(data=[data])
-
     data.pop("_id")
 
     new_data = deepcopy(data)
@@ -102,7 +163,7 @@ def test_replace():
 
     new_data["choreography"]["name"] = choreography_name
     new_data["choreography"]["name"] = choreography_name
-    new_data["choreography"]["transactions"]["0"]["status"] = tx_state
+    new_data["choreography"]["transactions"][0]["status"] = tx_state
 
     mongodb.replace(data["sagaId"], new_data)
 
@@ -113,28 +174,46 @@ def test_replace():
     assert document == new_data
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_delete():
     """
     delete all except one of the ligitimate data which we choose
     """
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    connection_url = "mongodb://127.0.0.1:27017/"
-
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
     mongodb.connect()
+    mongodb.client[db_name].drop_collection(collection_name)
+    mongodb.client[db_name].create_collection(collection_name)
 
     mongodb.delete(query={"data.guildId": {"$ne": "993163081939165234"}})
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def test_wrong_input():
     """
     give wrong input to insert
     """
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
 
-    mongodb = MongoDB(connection_str=connection_url)
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    db_name = os.getenv("DB_SAGA_NAME")
+    collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=db_name, collection_name=collection_name
+    )
+
     mongodb.connect()
 
     data = create_random_data()
@@ -144,7 +223,6 @@ def test_wrong_input():
     assert valid is False
 
 
-@pytest.mark.skip(reason="No MongoDB instance available.")
 def create_random_data():
     random_guildId = ""
     for _ in range(18):
@@ -153,25 +231,19 @@ def create_random_data():
 
     data = {
         "choreography": {
-            "name": f"test_{randint(0, 50)}",
-            "transactions": {
-                "0": {
-                    "queue": "SERVER_API",
-                    "event": "UPDATE_GUILD",
+            "name": "DISCORD_UPDATE_CHANNELS",
+            "transactions": [
+                {
+                    "queue": "DISCORD_ANALYZER",
+                    "event": "RUN",
                     "order": 1,
                     "status": "NOT_STARTED",
                 },
-                "1": {
-                    "queue": "DISCORD_BOT",
-                    "event": "SEND_MESSAGE",
-                    "order": 2,
-                    "status": "NOT_STARTED",
-                },
-            },
+            ],
         },
         "status": "NOT_STARTED",
-        "data": {"guildId": random_guildId},
-        "sagaId": str(uuid1()),
+        "data": {"guildId": "sample_guild", "created": True},
+        "sagaId": "14497720-1132-11ee-96f6-fd4f90065411",
         "createdAt": datetime.now().isoformat(),
         "updatedAt": (datetime.now() + timedelta(minutes=2)).isoformat(),
     }

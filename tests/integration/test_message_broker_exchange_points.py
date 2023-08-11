@@ -1,10 +1,10 @@
+import os
+
+from dotenv import load_dotenv
+
 from tc_messageBroker import RabbitMQ
-import pytest
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_declare_default_exchange_direct():
     """
     declare direct exchange point with default parameters,
@@ -12,11 +12,11 @@ def test_tc_message_broker_declare_default_exchange_direct():
      auto_delete = False,
      options = None
     """
-
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -27,9 +27,6 @@ def test_tc_message_broker_declare_default_exchange_direct():
     messageBroker.create_exchange(name="exchange_point", type="direct")
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_declare_default_exchange_topic():
     """
     declare topic exchange point with default parameters,
@@ -37,10 +34,12 @@ def test_tc_message_broker_declare_default_exchange_topic():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -51,9 +50,6 @@ def test_tc_message_broker_declare_default_exchange_topic():
     messageBroker.create_exchange(name="exchange_point2", type="topic")
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_declare_exchange_fanout():
     """
     declare fanout exchange point with default parameters,
@@ -61,10 +57,12 @@ def test_tc_message_broker_declare_exchange_fanout():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -74,9 +72,6 @@ def test_tc_message_broker_declare_exchange_fanout():
     messageBroker.create_exchange(name="exchange_point3", type="fanout")
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_declare_default_exchange_headers():
     """
     declare `match` exchange with default parameters,
@@ -84,10 +79,12 @@ def test_tc_message_broker_declare_default_exchange_headers():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -97,9 +94,6 @@ def test_tc_message_broker_declare_default_exchange_headers():
     messageBroker.create_exchange(name="exchange_point4", type="headers")
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_declare_durable_false_exchange_direct():
     """
     declare `match` exchange with default parameters,
@@ -107,10 +101,12 @@ def test_tc_message_broker_declare_durable_false_exchange_direct():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -124,9 +120,6 @@ def test_tc_message_broker_declare_durable_false_exchange_direct():
     )
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_declare_auto_delete_true_exchange_direct():
     """
     declare `match` exchange with default parameters,
@@ -134,10 +127,12 @@ def test_tc_message_broker_declare_auto_delete_true_exchange_direct():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -151,9 +146,6 @@ def test_tc_message_broker_declare_auto_delete_true_exchange_direct():
     )
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_publish_on_exchange():
     """
     declare direct exchange point with default parameters,
@@ -161,10 +153,12 @@ def test_tc_message_broker_publish_on_exchange():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password
@@ -180,9 +174,6 @@ def test_tc_message_broker_publish_on_exchange():
     )
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no RabbitMQ instance available)"
-)
 def test_tc_message_broker_bind_queue_on_exchange():
     """
     declare direct exchange point with default parameters,
@@ -190,10 +181,12 @@ def test_tc_message_broker_bind_queue_on_exchange():
      auto_delete = False,
      options = None
     """
-    broker_url = "localhost"
-    port = 5672
-    username = "guest"
-    password = "guest"
+    load_dotenv()
+
+    broker_url = os.getenv("RABBIT_HOST")
+    port = os.getenv("RABBIT_PORT")
+    username = os.getenv("RABBIT_USER")
+    password = os.getenv("RABBIT_PASSWORD")
 
     messageBroker = RabbitMQ(
         broker_url=broker_url, port=port, username=username, password=password

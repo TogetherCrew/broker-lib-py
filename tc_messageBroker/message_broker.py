@@ -2,7 +2,7 @@ import functools
 import json
 import logging
 from datetime import datetime
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 import pika
 
@@ -133,6 +133,9 @@ class RabbitMQ:
         body_serialized = json.loads(body)
         event = body_serialized["event"]
 
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
+
         if event not in self.event_function.keys():
             logging.info(" An Event was received that doesn't exist")
             self.connection.add_callback_threadsafe(
@@ -151,7 +154,12 @@ class RabbitMQ:
                 )
             )
 
-    def consume(self, queue_name: str, consume_options: dict = None, **kwargs):
+    def consume(
+        self,
+        queue_name: str,
+        consume_options: Optional[dict[str, Any]] = None,
+        **kwargs,
+    ) -> None:
         """
         set consuming events from a queue
         queue_name : str
@@ -166,6 +174,9 @@ class RabbitMQ:
         """
         self._queue_declare(queue_name=queue_name, kwargs=kwargs)
 
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
+
         self.channel.basic_consume(
             queue=queue_name,
             on_message_callback=self._consume_callback,
@@ -174,7 +185,11 @@ class RabbitMQ:
         )
 
     def publish(
-        self, queue_name: str, event: str, content: dict, options: any = None
+        self,
+        queue_name: str,
+        event: str,
+        content: dict,
+        options: Optional[dict[str, Any]] = None,
     ) -> None:
         """
         Publish a specific message to a specific queue directly
@@ -195,6 +210,9 @@ class RabbitMQ:
         """
         data = self._define_data(event=event, content=content)
 
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
+
         self.channel.basic_publish(
             exchange=self.exchange_name,
             routing_key=queue_name,
@@ -202,7 +220,7 @@ class RabbitMQ:
             properties=options,
         )
 
-    def on_event(self, event_name: str, on_message: callable) -> None:
+    def on_event(self, event_name: str, on_message: Callable) -> None:
         """
         set a function to be called when an event happened
 
@@ -210,7 +228,7 @@ class RabbitMQ:
         -------------
         event_name : str
             the event name we're setting the function for
-        on_message : callable
+        on_message : Callable
             the message when recieved (consumed) to call the function
 
         """
@@ -249,7 +267,7 @@ class RabbitMQ:
         # default values
         durable = True
         auto_delete = False
-        options = None
+        options: Optional[dict[str, Any]] = None
 
         if "durable" in kwargs.keys():
             durable = kwargs["durable"]
@@ -257,6 +275,9 @@ class RabbitMQ:
             auto_delete = kwargs["auto_delete"]
         if "options" in kwargs.keys():
             options = kwargs["options"]
+
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
 
         self.channel.exchange_declare(
             exchange=name,
@@ -283,6 +304,9 @@ class RabbitMQ:
                 default is False
         """
         (queue_durability, queue_auto_delete) = self._get_declare_queue_param(kwargs)
+
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
 
         # make sure that the channel is created,
         # if not this statement will create it
@@ -314,6 +338,9 @@ class RabbitMQ:
         """
 
         self._queue_declare(queue_name=queue_name, kwargs=kwargs)
+
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
 
         self.channel.queue_bind(
             queue=queue_name, exchange=exchange_name, routing_key=pattern
@@ -347,6 +374,9 @@ class RabbitMQ:
         """
 
         data = self._define_data(event=event, content=content)
+
+        if self.connection is None or self.channel is None:
+            raise ConnectionError("The broker needs to connect first!")
 
         self.channel.basic_publish(
             exchange=exchange_name,

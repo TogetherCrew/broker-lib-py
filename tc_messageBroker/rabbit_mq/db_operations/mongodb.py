@@ -6,9 +6,8 @@ from pymongo import MongoClient
 from pymongo.read_concern import ReadConcern
 from pymongo.write_concern import WriteConcern
 
-from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import (
-    choreography_schema,
-)
+from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import \
+    choreography_schema
 
 
 class MongoDB:

@@ -25,4 +25,7 @@ if __name__ == "__main__":
     rabbit_mq.connect(Queue.DISCORD_ANALYZER)
 
     rabbit_mq.consume(Queue.DISCORD_ANALYZER)
-    rabbit_mq.channel.start_consuming()
+    if rabbit_mq.channel is not None:
+        rabbit_mq.channel.start_consuming()
+    else:
+        print("Connection to broker was not successful!")

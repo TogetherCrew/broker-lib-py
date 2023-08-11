@@ -19,7 +19,7 @@ def test_next_single_not_started_tx():
     )
 
     def sample_publish(**kwargs):
-        ## shouldn't get to this since there isn't more than on transactions to do
+        # shouldn't get to this since there isn't more than on transactions to do
         assert True is False
 
     def sample_call():
@@ -89,7 +89,7 @@ def test_saga_fails():
     )
 
     def sample_publish(**kwargs):
-        ## shouldn't get to this since there isn't more than on transactions to do
+        # shouldn't get to this since there isn't more than on transactions to do
         raise ValueError("An error in pipeline!")
 
     def sample_call():
@@ -122,7 +122,7 @@ def test_saga_and_transaction_fails():
     )
 
     def sample_publish(**kwargs):
-        ## shouldn't get to this since there isn't more than on transactions to do
+        # shouldn't get to this since there isn't more than on transactions to do
         assert True is False
 
     def sample_call():

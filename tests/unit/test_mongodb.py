@@ -24,6 +24,7 @@ def test_mongo_class():
     assert mongodb.collection_name == collection_name
     assert mongodb.client is None
 
+
 def test_credentials():
     load_dotenv()
     host = os.getenv("DB_HOST")

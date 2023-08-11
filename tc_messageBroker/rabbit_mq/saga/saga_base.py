@@ -1,12 +1,15 @@
-from .choreography_base import IChoreography
-from .transaction_base import ITransaction
-from .utils.saga_base_utils import get_transactions, convert_tx_dict
-from tc_messageBroker.rabbit_mq.status import Status
+import logging
 import uuid
 from datetime import datetime
+
 import numpy as np
+
 from tc_messageBroker.rabbit_mq.db_operations import MongoDB
-import logging
+from tc_messageBroker.rabbit_mq.status import Status
+
+from .choreography_base import IChoreography
+from .transaction_base import ITransaction
+from .utils.saga_base_utils import convert_tx_dict, get_transactions
 
 
 class Saga:
@@ -79,7 +82,7 @@ class Saga:
 
         self.status = Status.IN_PROGRESS
 
-        ## get the first order transaction
+        # get the first order transaction
         current_tx = tx_sorted[0]
 
         current_tx.status = Status.IN_PROGRESS
@@ -90,15 +93,15 @@ class Saga:
         )
 
         try:
-            ## the function we would call
+            # the function we would call
             result = call_function()
 
             current_tx.status = Status.SUCCESS
             current_tx.end = datetime.now()
-            ## in miliseconds format
+            # in miliseconds format
             current_tx.runtime = (current_tx.end - current_tx.start).microseconds / 1000
 
-            ## if we ran the last transaction
+            # if we ran the last transaction
             if tx_not_started_count == 1:
                 self.status = Status.SUCCESS
             else:
@@ -197,20 +200,20 @@ class Saga:
         default is False meaning we have to have an interaction with db
         """
         if not test:
-            ## save the status into DB
+            # save the status into DB
             mongodb = self._get_mongo_db(
                 mongo_creds=mongo_creds,
             )
             data = self._create_data()
 
-            ## creating a duplicate choreography to avoid shallow copy
+            # creating a duplicate choreography to avoid shallow copy
             choreography = IChoreography(
                 name=self.choreography.name, transactions=transactions
             )
 
             self.choreography = choreography
 
-            ## update the available choreography
+            # update the available choreography
             mongodb.replace(sagaId=self.uuid, data=data)
 
     def _create_data(self) -> dict[str, any]:
@@ -245,7 +248,7 @@ class Saga:
         """
         get mongodb instance
         """
-        ## save the status into DB
+        # save the status into DB
         mongodb = MongoDB(
             connection_str=mongo_creds["connection_str"],
             db_name=mongo_creds["db_name"],

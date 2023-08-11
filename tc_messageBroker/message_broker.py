@@ -1,10 +1,10 @@
-import pika
-
+import functools
+import json
 # from typing import Callable
 import logging
 from datetime import datetime
-import json
-import functools
+
+import pika
 
 
 class RabbitMQ:
@@ -17,14 +17,14 @@ class RabbitMQ:
         self._username = username
         self._password = password
 
-        ## it will use the default exchange point if not created
+        # it will use the default exchange point if not created
         self.exchange_name = ""
         self.channel = None
         self.connection = None
         self.event_function = {}
 
     def __new__(cls, broker_url: str, port: int, username: str, password: str):
-        ## making it singleton
+        # making it singleton
         if not hasattr(cls, "instance"):
             cls.instance = super(RabbitMQ, cls).__new__(cls)
         return cls.instance
@@ -71,7 +71,7 @@ class RabbitMQ:
                     host=amqpServer,
                     port=self.port,
                     credentials=credentials,
-                    heartbeat=heartbeat,  ## disabling the heartbeat
+                    heartbeat=heartbeat,  # disabling the heartbeat
                 ),
             )
             self.channel = self.connection.channel()
@@ -251,7 +251,7 @@ class RabbitMQ:
             options : any
                 more options for the exchange_declare
         """
-        ## default values
+        # default values
         durable = True
         auto_delete = False
         options = None

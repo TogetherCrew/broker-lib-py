@@ -1,1 +1,1 @@
-from .mongodb import MongoDB
+from .mongodb import MongoDB  # flake8: noqa: F401

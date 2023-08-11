@@ -1,8 +1,8 @@
 from tc_messageBroker.rabbit_mq.event import Event
 from tc_messageBroker.rabbit_mq.queue import Queue
 from tc_messageBroker.rabbit_mq.status import Status
-from .transaction_base import ITransaction
 
+from .transaction_base import ITransaction
 
 DISCORD_UPDATE_CHANNELS_TRANSACTIONS = [
     ITransaction(

@@ -1,12 +1,13 @@
+import logging
+
+import jsonschema
+from jsonschema.exceptions import ValidationError
 from pymongo import MongoClient
 from pymongo.read_concern import ReadConcern
 from pymongo.write_concern import WriteConcern
-from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import (
-    choreography_schema,
-)
-import jsonschema
-from jsonschema.exceptions import ValidationError
-import logging
+
+from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import \
+    choreography_schema
 
 
 class MongoDB:

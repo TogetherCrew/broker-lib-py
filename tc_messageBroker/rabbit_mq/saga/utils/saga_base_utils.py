@@ -1,8 +1,10 @@
 # Doing the object to dict and vice operations here
+from typing import Any
+
 from tc_messageBroker.rabbit_mq.saga.transactions import ITransaction
 
 
-def get_transactions(transactions: dict[dict[str, any]]) -> list[ITransaction]:
+def get_transactions(transactions: list[dict[str, Any]]) -> list[ITransaction]:
     transactions_obj = []
 
     for tx in transactions:
@@ -16,7 +18,7 @@ def convert_tx_dict(transaction: ITransaction):
     """
     convert the transaction into a dictionary
     """
-    tx_dict = {}
+    tx_dict: dict[str, Any] = {}
 
     tx_dict["queue"] = transaction.queue
     tx_dict["event"] = transaction.event

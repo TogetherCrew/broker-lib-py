@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 
 from dotenv import load_dotenv
 from numpy.random import randint
-
 from tc_messageBroker.rabbit_mq.db_operations import MongoDB
 
 

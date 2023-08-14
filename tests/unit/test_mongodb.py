@@ -1,7 +1,6 @@
 import os
 
 from dotenv import load_dotenv
-
 from tc_messageBroker.rabbit_mq.db_operations.mongodb import MongoDB
 
 

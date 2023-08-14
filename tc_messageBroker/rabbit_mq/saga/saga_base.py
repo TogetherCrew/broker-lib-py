@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Any, Callable, Optional
 
 import numpy as np
-
 from tc_messageBroker.rabbit_mq.db_operations import MongoDB
 from tc_messageBroker.rabbit_mq.status import Status
 

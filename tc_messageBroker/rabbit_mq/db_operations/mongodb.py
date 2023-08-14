@@ -7,8 +7,8 @@ from pymongo import MongoClient
 from pymongo.read_concern import ReadConcern
 from pymongo.write_concern import WriteConcern
 
-from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import (
-    choreography_schema,
+from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import ( # isort: skip
+    choreography_schema
 )
 
 
@@ -65,9 +65,7 @@ class MongoDB:
                         write_concern=WriteConcern("local"),
                     )
             else:
-                raise ConnectionError(
-                    "No connection to MongoDB from broker library!"
-                )
+                raise ConnectionError("No connection to MongoDB from broker library!")
 
     def write(self, data: list[dict]):
         """
@@ -84,9 +82,7 @@ class MongoDB:
                         write_concern=WriteConcern("local"),
                     )
             else:
-                raise ConnectionError(
-                    "No connection to MongoDB from broker library!"
-                )
+                raise ConnectionError("No connection to MongoDB from broker library!")
 
     def read(self, query: dict = {}, count: int = 1) -> Optional[list] | dict[str, Any]:
         """

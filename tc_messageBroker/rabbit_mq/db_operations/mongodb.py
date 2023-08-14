@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from pymongo.read_concern import ReadConcern
 from pymongo.write_concern import WriteConcern
 
-from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import ( # isort: skip
+from tc_messageBroker.rabbit_mq.saga.utils.choreography_schema import (  # isort: skip
     choreography_schema
 )
 

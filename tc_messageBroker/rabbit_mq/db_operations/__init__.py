@@ -1,1 +1,2 @@
-from .mongodb import MongoDB  # flake8: noqa
+# flake8: noqa: F401
+from .mongodb import MongoDB

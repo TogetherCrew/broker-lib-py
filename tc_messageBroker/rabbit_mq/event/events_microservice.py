@@ -19,6 +19,15 @@ class DiscordBotEvent:
 
 
 class DiscordAnalyzerEvent:
-    RUN = AnalyzerBaseEvent.RUN  ## RECOMPUTE
+    RUN = AnalyzerBaseEvent.RUN  # RECOMPUTE
     RUN_ONCE = AnalyzerBaseEvent.RUN_ONCE
     # SAVE = AnalyzerBaseEvent.SAVE
+
+
+class TwitterBotEvent:
+    EXTRACT = "EXTRACT"
+    SEND_MESSAGE = "SEND_MESSAGE"
+
+
+class TwitterAnalyzerEvent:
+    RUN = AnalyzerBaseEvent.RUN  # RECOMPUTE

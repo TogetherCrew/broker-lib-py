@@ -1,4 +1,5 @@
 .coverage
+coverage/*
 .vscode
 __pycache__/
 *.pyc
@@ -10,3 +11,4 @@ build/
 TC-broker/
 main.ipynb
 dist/*
+.env

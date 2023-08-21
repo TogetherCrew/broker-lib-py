@@ -1,8 +1,10 @@
 from .choreography_base import IChoreography
-from .transactions import (DISCORD_FETCH_MEMBERS_TRANSACTIONS,
-                           DISCORD_SCHEDULED_JOB_TRANSACTIONS,
-                           DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
-                           TWITTER_REFRESH_TRANSACTIONS)
+from .transactions import (
+    DISCORD_FETCH_MEMBERS_TRANSACTIONS,
+    DISCORD_SCHEDULED_JOB_TRANSACTIONS,
+    DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
+    TWITTER_REFRESH_TRANSACTIONS,
+)
 
 DISCORD_UPDATE_CHANNELS = IChoreography(
     name="DISCORD_UPDATE_CHANNELS",

@@ -60,3 +60,24 @@ DISCORD_FETCH_MEMBERS_TRANSACTIONS = [
         status=Status.NOT_STARTED,
     )
 ]
+
+TWITTER_REFRESH_TRANSACTIONS = [
+    ITransaction(
+        Queue.TWITTER_BOT,
+        Event.TWITTER_BOT.EXTRACT,
+        order=1,
+        status=Status.NOT_STARTED,
+    ),
+    ITransaction(
+        Queue.TWITTER_ANALYZER,
+        Event.TWITTER_ANALYZER.RUN,
+        order=2,
+        status=Status.NOT_STARTED,
+    ),
+    ITransaction(
+        Queue.TWITTER_BOT,
+        Event.TWITTER_BOT.SEND_MESSAGE,
+        order=3,
+        status=Status.NOT_STARTED,
+    ),
+]

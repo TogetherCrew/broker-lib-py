@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class ITransaction:
     def __init__(
         self, queue: str, event: str, order: int, status: str, **kwargs
@@ -42,7 +45,7 @@ class ITransaction:
         self.order = order
         self.status = status
 
-    def _get_kwarg(self, key: str, kwargs: dict[str, any], default_value=None):
+    def _get_kwarg(self, key: str, kwargs: dict[str, Any], default_value=None):
         if key in kwargs.keys():
             return kwargs[key]
         else:

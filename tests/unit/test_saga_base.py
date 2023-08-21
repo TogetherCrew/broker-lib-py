@@ -1,11 +1,12 @@
 """
 test the saga_base module
 """
-from tc_messageBroker.rabbit_mq.saga.saga_base import Saga
+from datetime import datetime
+
 from tc_messageBroker.rabbit_mq.saga.choreography import ChoreographyDict
 from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
+from tc_messageBroker.rabbit_mq.saga.saga_base import Saga
 from tc_messageBroker.rabbit_mq.saga.transaction_base import ITransaction
-from datetime import datetime
 from tc_messageBroker.rabbit_mq.status import Status
 
 
@@ -17,7 +18,7 @@ def test_choreagraphy_sorting_orders_predefined_choreogprahy():
         created_at=datetime.now(),
     )
 
-    ## it should sort the NOT_STARTED transactions
+    # it should sort the NOT_STARTED transactions
     (tx_sorted, not_started_count) = saga._sort_transactions(
         saga.choreography.transactions
     )
@@ -40,7 +41,7 @@ def test_assert_sorting_status_predefined_choreagprahy():
         created_at=datetime.now(),
     )
 
-    ## it should sort the NOT_STARTED transactions
+    # it should sort the NOT_STARTED transactions
     (tx_sorted, not_started_count) = saga._sort_transactions(
         saga.choreography.transactions
     )
@@ -70,7 +71,7 @@ def test_choreagraphy_sorting_orders_random_choreogprahy():
 
     saga = Saga(choreography, Status.NOT_STARTED, data=None, created_at=datetime.now())
 
-    ## it should sort the NOT_STARTED transactions
+    # it should sort the NOT_STARTED transactions
     (tx_sorted, not_started_count) = saga._sort_transactions(
         saga.choreography.transactions
     )
@@ -100,7 +101,7 @@ def test_choreagraphy_sorting_status_random_choreogprahy():
 
     saga = Saga(choreography, Status.NOT_STARTED, data=None, created_at=datetime.now())
 
-    ## it should sort the NOT_STARTED transactions
+    # it should sort the NOT_STARTED transactions
     (tx_sorted, not_started_count) = saga._sort_transactions(
         saga.choreography.transactions
     )
@@ -135,14 +136,14 @@ def test_saga_create_data():
         == ChoreographyDict.DISCORD_UPDATE_CHANNELS.name
     )
 
-    ## we had a list of transactions
+    # we had a list of transactions
     for idx, tx in enumerate(saga_dict["choreography"]["transactions"]):
         predefined_tx = ChoreographyDict.DISCORD_UPDATE_CHANNELS.transactions[idx]
         assert tx["queue"] == predefined_tx.queue
         assert tx["event"] == predefined_tx.event
         assert tx["order"] == predefined_tx.order
         assert tx["status"] == predefined_tx.status
-        ## these should be not defined in predefine transaction
+        # these should be not defined in predefine transaction
         assert "start" not in tx.keys()
         assert "end" not in tx.keys()
         assert "runtime" not in tx.keys()

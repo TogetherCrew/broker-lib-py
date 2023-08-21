@@ -1,52 +1,62 @@
 """
 testing the saga object
 """
-from tc_messageBroker.rabbit_mq.saga.saga_base import get_saga, Saga
-from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
+import os
+from copy import deepcopy
 from datetime import datetime
+
+import numpy as np
+from dotenv import load_dotenv
+from tc_messageBroker.rabbit_mq.db_operations import MongoDB
+from tc_messageBroker.rabbit_mq.saga.choreography_base import IChoreography
+from tc_messageBroker.rabbit_mq.saga.saga_base import Saga, get_saga
 from tc_messageBroker.rabbit_mq.saga.transactions import (
     DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
 )
 from tc_messageBroker.rabbit_mq.status import Status
-import numpy as np
-from copy import deepcopy
-import pytest
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no available MongoDB instance)"
-)
 def test_inputs():
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
+    saga_db = os.getenv("DB_SAGA_NAME")
+    saga_collection = os.getenv("DB_SAGA_COLLECTION_NAME")
 
-    ## we should have this data before running this test in db
+    connection_url = f"mongodb://{user}:{password}@{host}:{port}"
+    mongodb = MongoDB(
+        connection_str=connection_url, db_name=saga_db, collection_name=saga_collection
+    )
+    mongodb.connect()
+    mongodb.client[saga_db].drop_collection(saga_collection)
+    mongodb.client[saga_db].create_collection(saga_collection)
+
+    # we should have this data before running this test in db
     saga = get_saga(
         sagaId="something",
         connection_url=connection_url,
-        db_name="Saga",
-        collection="saga",
+        db_name=saga_db,
+        collection=saga_collection,
     )
-
-    assert saga.choreography is not None
-    assert saga.status in [
-        Status.IN_PROGRESS,
-        Status.CANCELLED,
-        Status.FAILED,
-        Status.NOT_STARTED,
-        Status.SUCCESS,
-    ]
-    assert isinstance(saga.created_at, datetime) is True
-    assert isinstance(saga.uuid, str) is True
+    assert saga is None
 
 
-@pytest.mark.skip(
-    reason="Unable to test on GitHub Actions (no available MongoDB instance)"
-)
 def test_saga_update():
     """
     test updating a saga instance in db
     """
-    connection_url = "mongodb://127.0.0.1:27017/"
+    load_dotenv()
+    host = os.getenv("DB_HOST")
+    port = os.getenv("DB_PORT")
+    user = os.getenv("DB_USER")
+    password = os.getenv("DB_PASSWORD")
+
+    connection_creds = {}
+    connection_creds["connection_str"] = f"mongodb://{user}:{password}@{host}:{port}"
+    connection_creds["db_name"] = os.getenv("DB_SAGA_NAME")
+    connection_creds["collection_name"] = os.getenv("DB_SAGA_COLLECTION_NAME")
 
     choreography = IChoreography(
         name="sample", transactions=deepcopy(DISCORD_UPDATE_CHANNELS_TRANSACTIONS)
@@ -62,4 +72,4 @@ def test_saga_update():
     tx = np.array(choreography.transactions)
     tx[0].status = Status.SUCCESS
 
-    saga._update_save(transactions=tx, mongo_connection=connection_url)
+    saga._update_save(transactions=tx, mongo_creds=connection_creds)

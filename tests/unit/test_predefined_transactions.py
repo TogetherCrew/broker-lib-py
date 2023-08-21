@@ -4,7 +4,7 @@ from tc_messageBroker.rabbit_mq.saga.transactions import (
     DISCORD_FETCH_MEMBERS_TRANSACTIONS,
     DISCORD_SCHEDULED_JOB_TRANSACTIONS,
     DISCORD_UPDATE_CHANNELS_TRANSACTIONS,
-    TWITTER_REFRESH_TRANSACTIONS
+    TWITTER_REFRESH_TRANSACTIONS,
 )
 from tc_messageBroker.rabbit_mq.status import Status
 

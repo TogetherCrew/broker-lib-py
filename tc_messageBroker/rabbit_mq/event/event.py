@@ -1,6 +1,10 @@
-from .events_microservice import (DiscordAnalyzerEvent, DiscordBotEvent,
-                                  ServerEvent, TwitterAnalyzerEvent,
-                                  TwitterBotEvent)
+from .events_microservice import (
+    DiscordAnalyzerEvent, 
+    DiscordBotEvent,
+    ServerEvent, 
+    TwitterAnalyzerEvent,
+    TwitterBotEvent,
+)
 
 
 class Event:

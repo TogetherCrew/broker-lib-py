@@ -1,7 +1,7 @@
+from datetime import datetime
+from tc_messageBroker.rabbit_mq.status import Status
 from .choreography import ChoreographyDict
 from .saga_base import Saga
-from tc_messageBroker.rabbit_mq.status import Status
-from datetime import datetime
 
 
 class DiscordUpdateChannel(Saga):
@@ -18,6 +18,16 @@ class DiscordScheculedJob(Saga):
     def __init__(self, data: any) -> None:
         super().__init__(
             ChoreographyDict.DISCORD_SCHEDULED_JOB,
+            Status.NOT_STARTED,
+            data=data,
+            created_at=datetime.now(),
+        )
+
+
+class TwitterRefresh(Saga):
+    def __init__(self, data: any) -> None:
+        super().__init__(
+            ChoreographyDict.TWITTER_REFRESH,
             Status.NOT_STARTED,
             data=data,
             created_at=datetime.now(),

@@ -25,3 +25,13 @@ class DiscordScheculedJob(Saga):
             data=data,
             created_at=datetime.now(),
         )
+
+
+class TwitterRefresh(Saga):
+    def __init__(self, data: Any) -> None:
+        super().__init__(
+            ChoreographyDict.TWITTER_REFRESH,
+            Status.NOT_STARTED,
+            data=data,
+            created_at=datetime.now(),
+        )

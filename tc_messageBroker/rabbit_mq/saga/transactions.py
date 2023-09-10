@@ -64,20 +64,32 @@ DISCORD_FETCH_MEMBERS_TRANSACTIONS = [
 TWITTER_REFRESH_TRANSACTIONS = [
     ITransaction(
         Queue.TWITTER_BOT,
-        Event.TWITTER_BOT.EXTRACT,
+        Event.TWITTER_BOT.EXTRACT.TWEETS,
         order=1,
         status=Status.NOT_STARTED,
     ),
     ITransaction(
-        Queue.TWITTER_ANALYZER,
-        Event.TWITTER_ANALYZER.RUN,
+        Queue.TWITTER_BOT,
+        Event.TWITTER_BOT.EXTRACT.LIKES,
         order=2,
         status=Status.NOT_STARTED,
     ),
     ITransaction(
         Queue.TWITTER_BOT,
-        Event.TWITTER_BOT.SEND_MESSAGE,
+        Event.TWITTER_BOT.EXTRACT.PROFILES,
         order=3,
+        status=Status.NOT_STARTED,
+    ),
+    ITransaction(
+        Queue.TWITTER_ANALYZER,
+        Event.TWITTER_ANALYZER.RUN,
+        order=4,
+        status=Status.NOT_STARTED,
+    ),
+    ITransaction(
+        Queue.TWITTER_BOT,
+        Event.TWITTER_BOT.SEND_MESSAGE,
+        order=5,
         status=Status.NOT_STARTED,
     ),
 ]

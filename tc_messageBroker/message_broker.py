@@ -27,8 +27,10 @@ class RabbitMQ:
             cls.instance = super(RabbitMQ, cls).__new__(cls)
             cls.instance.channel: Optional[
                 pika.adapters.blocking_connection.BlockingChannel
-            ] = None
-            cls.instance.connection: Optional[pika.BlockingConnection] = None
+            ] = None  # type: ignore
+            cls.instance.connection: Optional[
+                pika.BlockingConnection
+            ] = None  # type: ignore
         return cls.instance
 
     def connect(

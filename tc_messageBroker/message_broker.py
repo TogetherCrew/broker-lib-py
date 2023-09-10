@@ -16,11 +16,12 @@ class RabbitMQ:
         self.port = port
         self._username = username
         self._password = password
+        # defining the variables
+        self.channel: Optional[pika.adapters.blocking_connection.BlockingChannel]
+        self.connection: Optional[pika.BlockingConnection]
 
         # it will use the default exchange point if not created
         self.exchange_name = ""
-        self.channel: Optional[pika.adapters.blocking_connection.BlockingChannel] = None
-        self.connection: Optional[pika.BlockingConnection] = None
         self.event_function: dict[str, Any] = {}
 
     def __new__(cls, broker_url: str, port: int, username: str, password: str):
@@ -89,6 +90,8 @@ class RabbitMQ:
             return True
         except Exception as exp:
             logging.error(f" Something went wrong with RabbitMQ {exp}")
+            self.channel = None
+            self.connection = None
             return False
 
     def _get_declare_queue_param(self, kwargs):
@@ -174,15 +177,15 @@ class RabbitMQ:
         """
         self._queue_declare(queue_name=queue_name, kwargs=kwargs)
 
-        if self.connection is None or self.channel is None:
+        try:
+            self.channel.basic_consume(
+                queue=queue_name,
+                on_message_callback=self._consume_callback,
+                arguments=consume_options,
+                auto_ack=False,
+            )
+        except NameError or AttributeError:
             raise ConnectionError("The broker needs to connect first!")
-
-        self.channel.basic_consume(
-            queue=queue_name,
-            on_message_callback=self._consume_callback,
-            arguments=consume_options,
-            auto_ack=False,
-        )
 
     def publish(
         self,
@@ -210,15 +213,15 @@ class RabbitMQ:
         """
         data = self._define_data(event=event, content=content)
 
-        if self.connection is None or self.channel is None:
+        try:
+            self.channel.basic_publish(
+                exchange=self.exchange_name,
+                routing_key=queue_name,
+                body=data,
+                properties=options,
+            )
+        except NameError or AttributeError:
             raise ConnectionError("The broker needs to connect first!")
-
-        self.channel.basic_publish(
-            exchange=self.exchange_name,
-            routing_key=queue_name,
-            body=data,
-            properties=options,
-        )
 
     def on_event(self, event_name: str, on_message: Callable) -> None:
         """
@@ -276,17 +279,17 @@ class RabbitMQ:
         if "options" in kwargs.keys():
             options = kwargs["options"]
 
-        if self.connection is None or self.channel is None:
+        try:
+            self.channel.exchange_declare(
+                exchange=name,
+                exchange_type=type,
+                durable=durable,
+                auto_delete=auto_delete,
+                arguments=options,
+            )
+            self.exchange_name = name
+        except NameError or AttributeError:
             raise ConnectionError("The broker needs to connect first!")
-
-        self.channel.exchange_declare(
-            exchange=name,
-            exchange_type=type,
-            durable=durable,
-            auto_delete=auto_delete,
-            arguments=options,
-        )
-        self.exchange_name = name
 
     def _queue_declare(self, queue_name: str, **kwargs):
         """
@@ -305,14 +308,16 @@ class RabbitMQ:
         """
         (queue_durability, queue_auto_delete) = self._get_declare_queue_param(kwargs)
 
-        if self.connection is None or self.channel is None:
+        try:
+            # make sure that the channel is created,
+            # if not this statement will create it
+            self.channel.queue_declare(
+                queue=queue_name,
+                durable=queue_durability,
+                auto_delete=queue_auto_delete,
+            )
+        except NameError or AttributeError:
             raise ConnectionError("The broker needs to connect first!")
-
-        # make sure that the channel is created,
-        # if not this statement will create it
-        self.channel.queue_declare(
-            queue=queue_name, durable=queue_durability, auto_delete=queue_auto_delete
-        )
 
     def bind_queue_to_exchange(
         self, queue_name: str, exchange_name: str, pattern: str, **kwargs
@@ -339,12 +344,12 @@ class RabbitMQ:
 
         self._queue_declare(queue_name=queue_name, kwargs=kwargs)
 
-        if self.connection is None or self.channel is None:
+        try:
+            self.channel.queue_bind(
+                queue=queue_name, exchange=exchange_name, routing_key=pattern
+            )
+        except NameError or AttributeError:
             raise ConnectionError("The broker needs to connect first!")
-
-        self.channel.queue_bind(
-            queue=queue_name, exchange=exchange_name, routing_key=pattern
-        )
 
     def publish_on_exchange(
         self,
@@ -375,15 +380,15 @@ class RabbitMQ:
 
         data = self._define_data(event=event, content=content)
 
-        if self.connection is None or self.channel is None:
+        try:
+            self.channel.basic_publish(
+                exchange=exchange_name,
+                routing_key=routing_key,
+                body=data,
+                properties=options,
+            )
+        except NameError or AttributeError:
             raise ConnectionError("The broker needs to connect first!")
-
-        self.channel.basic_publish(
-            exchange=exchange_name,
-            routing_key=routing_key,
-            body=data,
-            properties=options,
-        )
 
     def _define_data(self, event: str, content: dict) -> str:
         """

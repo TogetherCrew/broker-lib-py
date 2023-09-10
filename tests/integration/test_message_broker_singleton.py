@@ -28,7 +28,7 @@ def test_message_broker_connection_singleton():
         broker_url=url, port=port, username=username, password=password
     )
 
-    ## if error then the class instance is not singleton
+    # if error then the class instance is not singleton
     content = {"uuid": "uuid", "data": "some results"}
 
     messageBroker2.publish(

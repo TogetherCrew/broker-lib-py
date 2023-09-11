@@ -58,19 +58,29 @@ def test_discord_bot_fetch_tx():
 def test_twitter_bot_tx():
     tx = TWITTER_REFRESH_TRANSACTIONS
 
-    assert len(tx) == 3
+    assert len(tx) == 4
 
     assert tx[0].order == 1
     assert tx[0].queue == Queue.TWITTER_BOT
-    assert tx[0].event == Event.TWITTER_BOT.EXTRACT
+    assert tx[0].event == Event.TWITTER_BOT.EXTRACT.TWEETS
     assert tx[0].status == Status.NOT_STARTED
 
     assert tx[1].order == 2
-    assert tx[1].queue == Queue.TWITTER_ANALYZER
-    assert tx[1].event == Event.TWITTER_ANALYZER.RUN
+    assert tx[1].queue == Queue.TWITTER_BOT
+    assert tx[1].event == Event.TWITTER_BOT.EXTRACT.LIKES
     assert tx[1].status == Status.NOT_STARTED
 
     assert tx[2].order == 3
     assert tx[2].queue == Queue.TWITTER_BOT
-    assert tx[2].event == Event.TWITTER_BOT.SEND_MESSAGE
+    assert tx[2].event == Event.TWITTER_BOT.EXTRACT.PROFILES
     assert tx[2].status == Status.NOT_STARTED
+
+    # assert tx[3].order == 4
+    # assert tx[3].queue == Queue.TWITTER_ANALYZER
+    # assert tx[3].event == Event.TWITTER_ANALYZER.RUN
+    # assert tx[3].status == Status.NOT_STARTED
+
+    assert tx[3].order == 3
+    assert tx[3].queue == Queue.TWITTER_BOT
+    assert tx[3].event == Event.TWITTER_BOT.SEND_MESSAGE
+    assert tx[3].status == Status.NOT_STARTED

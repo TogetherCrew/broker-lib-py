@@ -24,8 +24,18 @@ class DiscordAnalyzerEvent:
     # SAVE = AnalyzerBaseEvent.SAVE
 
 
+class EXTRACT:
+    """
+    breaking down twitter extraction process
+    """
+
+    TWEETS = "EXTRACT_TWEETS"
+    LIKES = "EXTRACT_LIKES"
+    PROFILES = "EXTRACT_PROFILES"
+
+
 class TwitterBotEvent:
-    EXTRACT = "EXTRACT"
+    EXTRACT = EXTRACT
     SEND_MESSAGE = "SEND_MESSAGE"
 
 

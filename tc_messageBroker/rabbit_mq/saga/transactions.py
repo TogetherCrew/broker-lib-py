@@ -80,16 +80,16 @@ TWITTER_REFRESH_TRANSACTIONS = [
         order=3,
         status=Status.NOT_STARTED,
     ),
-    ITransaction(
-        Queue.TWITTER_ANALYZER,
-        Event.TWITTER_ANALYZER.RUN,
-        order=4,
-        status=Status.NOT_STARTED,
-    ),
+    # ITransaction(
+    #     Queue.TWITTER_ANALYZER,
+    #     Event.TWITTER_ANALYZER.RUN,
+    #     order=4,
+    #     status=Status.NOT_STARTED,
+    # ),
     ITransaction(
         Queue.TWITTER_BOT,
         Event.TWITTER_BOT.SEND_MESSAGE,
-        order=5,
+        order=4,
         status=Status.NOT_STARTED,
     ),
 ]

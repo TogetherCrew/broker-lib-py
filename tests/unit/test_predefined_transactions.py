@@ -75,12 +75,12 @@ def test_twitter_bot_tx():
     assert tx[2].event == Event.TWITTER_BOT.EXTRACT.PROFILES
     assert tx[2].status == Status.NOT_STARTED
 
-    assert tx[3].order == 4
-    assert tx[3].queue == Queue.TWITTER_ANALYZER
-    assert tx[3].event == Event.TWITTER_ANALYZER.RUN
-    assert tx[3].status == Status.NOT_STARTED
+    # assert tx[3].order == 4
+    # assert tx[3].queue == Queue.TWITTER_ANALYZER
+    # assert tx[3].event == Event.TWITTER_ANALYZER.RUN
+    # assert tx[3].status == Status.NOT_STARTED
 
-    assert tx[4].order == 5
-    assert tx[4].queue == Queue.TWITTER_BOT
-    assert tx[4].event == Event.TWITTER_BOT.SEND_MESSAGE
-    assert tx[4].status == Status.NOT_STARTED
+    assert tx[3].order == 3
+    assert tx[3].queue == Queue.TWITTER_BOT
+    assert tx[3].event == Event.TWITTER_BOT.SEND_MESSAGE
+    assert tx[3].status == Status.NOT_STARTED

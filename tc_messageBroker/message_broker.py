@@ -25,12 +25,12 @@ class RabbitMQ:
         # making it singleton
         if not hasattr(cls, "instance"):
             cls.instance = super(RabbitMQ, cls).__new__(cls)
-            cls.instance.channel: Optional[
+            cls.instance.channel: Optional[  # type: ignore
                 pika.adapters.blocking_connection.BlockingChannel
-            ] = None  # type: ignore
-            cls.instance.connection: Optional[
+            ] = None
+            cls.instance.connection: Optional[  # type: ignore
                 pika.BlockingConnection
-            ] = None  # type: ignore
+            ] = None
         return cls.instance
 
     def connect(

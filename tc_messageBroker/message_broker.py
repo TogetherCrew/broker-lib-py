@@ -19,14 +19,18 @@ class RabbitMQ:
 
         # it will use the default exchange point if not created
         self.exchange_name = ""
-        self.channel: Optional[pika.adapters.blocking_connection.BlockingChannel] = None
-        self.connection: Optional[pika.BlockingConnection] = None
         self.event_function: dict[str, Any] = {}
 
     def __new__(cls, broker_url: str, port: int, username: str, password: str):
         # making it singleton
         if not hasattr(cls, "instance"):
             cls.instance = super(RabbitMQ, cls).__new__(cls)
+            cls.instance.channel: Optional[  # type: ignore
+                pika.adapters.blocking_connection.BlockingChannel
+            ] = None
+            cls.instance.connection: Optional[  # type: ignore
+                pika.BlockingConnection
+            ] = None
         return cls.instance
 
     def connect(

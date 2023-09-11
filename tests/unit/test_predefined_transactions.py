@@ -58,7 +58,7 @@ def test_discord_bot_fetch_tx():
 def test_twitter_bot_tx():
     tx = TWITTER_REFRESH_TRANSACTIONS
 
-    assert len(tx) == 5
+    assert len(tx) == 4
 
     assert tx[0].order == 1
     assert tx[0].queue == Queue.TWITTER_BOT

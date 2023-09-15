@@ -80,7 +80,7 @@ def test_twitter_bot_tx():
     # assert tx[3].event == Event.TWITTER_ANALYZER.RUN
     # assert tx[3].status == Status.NOT_STARTED
 
-    assert tx[3].order == 3
-    assert tx[3].queue == Queue.TWITTER_BOT
-    assert tx[3].event == Event.TWITTER_BOT.SEND_MESSAGE
+    assert tx[3].order == 4
+    assert tx[3].queue == Queue.DISCORD_BOT
+    assert tx[3].event == Event.DISCORD_BOT.SEND_MESSAGE
     assert tx[3].status == Status.NOT_STARTED

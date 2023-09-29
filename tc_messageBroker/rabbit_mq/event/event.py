@@ -1,10 +1,10 @@
 from .events_microservice import (
     DiscordAnalyzerEvent,
     DiscordBotEvent,
+    HivemindEvent,
     ServerEvent,
     TwitterAnalyzerEvent,
     TwitterBotEvent,
-    HivemindEvent,
 )
 
 

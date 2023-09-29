@@ -4,6 +4,7 @@ from .events_microservice import (
     ServerEvent,
     TwitterAnalyzerEvent,
     TwitterBotEvent,
+    HivemindEvent,
 )
 
 
@@ -13,3 +14,4 @@ class Event:
     DISCORD_ANALYZER = DiscordAnalyzerEvent
     TWITTER_BOT = TwitterBotEvent
     TWITTER_ANALYZER = TwitterAnalyzerEvent
+    HIVEMIND = HivemindEvent

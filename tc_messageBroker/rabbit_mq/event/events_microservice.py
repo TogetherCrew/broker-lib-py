@@ -16,6 +16,7 @@ class DiscordBotEvent:
     FETCH = BotBaseEvent.FETCH
     SEND_MESSAGE = "SEND_MESSAGE"
     FETCH_MEMBERS = "FETCH_MEMBERS"
+    UPDATE_INTERACTION = "UPDATE_INTERACTION"
 
 
 class DiscordAnalyzerEvent:
@@ -41,3 +42,8 @@ class TwitterBotEvent:
 
 class TwitterAnalyzerEvent:
     RUN = AnalyzerBaseEvent.RUN  # RECOMPUTE
+
+
+class HivemindEvent:
+    INTERACTION_CREATED = "HIVEMIND_QUEUE"
+    QUEUE_MESSAGES_UPDATED = "QUEUE_MESSAGES_UPDATED"

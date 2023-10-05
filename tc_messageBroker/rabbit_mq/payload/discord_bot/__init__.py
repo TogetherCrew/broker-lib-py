@@ -1,2 +1,2 @@
 # flake8: noqa: F401
-from .interaction import ChatInputCommandInteraction
+from .chat_input_interaction import ChatInputCommandInteraction

@@ -10,6 +10,7 @@ from tc_messageBroker.rabbit_mq.payload.discord_bot.create_followup_message_data
     FollowUpMessageData,
 )
 
+
 class TestDiscordMessage(unittest.TestCase):
     def test_param_setting_empty_all(self):
         message = FollowUpMessageData()

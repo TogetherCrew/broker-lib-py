@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from .flags import BitFields
-
 
 class User:
     def __init__(
@@ -80,7 +78,7 @@ class User:
     def to_dict(self) -> dict:
         created_at = self.created_at
         if self.created_at is not None:
-            created_at = self.created_at.isoformat()
+            created_at = self.created_at
 
         data = {
             "id": self.id,

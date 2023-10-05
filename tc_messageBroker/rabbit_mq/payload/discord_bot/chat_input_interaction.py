@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Any
 
 from .base_types.flags import PermissionsBitField
 from .base_types.guild import Guild
@@ -119,8 +120,8 @@ class ChatInputCommandInteraction:
             version=data.get("version"),
         )
 
-    def to_dict(self) -> dict:
-        data = {
+    def to_dict(self) -> dict[str, Any]:
+        data : dict[str, Any] = {
             "id": self.id,
         }
         if self.application_id is not None:
@@ -177,5 +178,4 @@ class ChatInputCommandInteraction:
             data["options"] = self.options
         if self.version is not None:
             data["version"] = self.version
-        
         return data

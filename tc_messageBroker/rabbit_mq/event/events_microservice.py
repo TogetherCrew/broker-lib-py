@@ -12,11 +12,23 @@ class ServerEvent:
     UPDATE_GUILD = "UPDATE_GUILD"
 
 
+class DiscordBotInteractionResponseEvent:
+    CREATE = "INTERACTION_RESPONSE_CREATE"
+    EDIT = "INTERACTION_RESPONSE_EDIT"
+    DELETE = "INTERACTION_RESPONSE_DELETE"
+
+
+class DiscordBotFollowUp:
+    CREATE = "FOLLOWUP_CREATE"
+
+
 class DiscordBotEvent:
     FETCH = BotBaseEvent.FETCH
     SEND_MESSAGE = "SEND_MESSAGE"
     FETCH_MEMBERS = "FETCH_MEMBERS"
     UPDATE_INTERACTION = "UPDATE_INTERACTION"
+    INTERACTION_RESPONSE = DiscordBotInteractionResponseEvent
+    FOLLOWUP_MESSAGE = DiscordBotFollowUp
 
 
 class DiscordAnalyzerEvent:

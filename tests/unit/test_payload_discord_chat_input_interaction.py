@@ -1,11 +1,11 @@
 from datetime import datetime
 
+from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.guild import Guild
+from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.user import User
 from tc_messageBroker.rabbit_mq.payload.discord_bot.chat_input_interaction import (
     ChatInputCommandInteraction,
 )
 from tc_messageBroker.rabbit_mq.payload.discord_bot.type import InteractionType
-from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.user import User
-from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.guild import Guild
 
 
 def test_team_member_empty_inputs():

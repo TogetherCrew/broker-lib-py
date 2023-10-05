@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.user import User
 from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.flags import BitFields
+from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.user import User
 
 
 def test_user_empty_fields_input():

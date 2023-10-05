@@ -1,6 +1,3 @@
-from typing import Optional
-
-
 class Attachment:
     def __init__(
         self,

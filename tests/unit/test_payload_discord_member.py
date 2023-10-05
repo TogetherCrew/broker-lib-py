@@ -1,7 +1,8 @@
 import unittest
 from datetime import datetime
-from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.member import Member
+
 from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.guild import Guild
+from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.member import Member
 
 
 class TestMember(unittest.TestCase):

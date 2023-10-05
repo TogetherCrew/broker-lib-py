@@ -24,7 +24,7 @@ class Member:
         self.avatar = avatar
         self.flags = flags
 
-    def from_dict(member_dict: dict, guild: Guild):
+    def from_dict(self, member_dict: dict, guild: Guild):
         """
         convert the dicrionary data into the Member class instance
         Note that the keys should follow the camelCase format

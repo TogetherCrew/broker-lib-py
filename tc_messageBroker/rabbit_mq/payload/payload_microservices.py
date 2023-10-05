@@ -1,5 +1,5 @@
-from .discord_bot.chat_input_interaction import ChatInputCommandInteraction
 from .discord_bot.base_types.interaction_callback_data import InteractionCallbackData
+from .discord_bot.chat_input_interaction import ChatInputCommandInteraction
 from .discord_bot.edit_webhook_data import InteractionResponseEditData
 from .discord_bot.create_followup_message_data import FollowUpMessageData
 

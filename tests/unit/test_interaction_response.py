@@ -1,10 +1,10 @@
 from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.interaction_callback_data import (
     InteractionCallbackData,
 )
-from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.embed import Embed
 from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.attachment import (
     Attachment,
 )
+from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.embed import Embed
 from tc_messageBroker.rabbit_mq.payload.discord_bot.interaction_response import (
     InteractionResponse,
 )

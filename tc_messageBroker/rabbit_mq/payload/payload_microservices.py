@@ -1,20 +1,22 @@
-from .discord_bot.interaction_response import InteractionResponse
 from .discord_bot.chat_input_interaction import ChatInputCommandInteraction
 from .discord_bot.base_types.interaction_callback_data import InteractionCallbackData
+from .discord_bot.edit_webhook_data import InteractionResponseEditData
+from .discord_bot.create_followup_message_data import FollowUpMessageData
 
 
 class DiscordBotInteractionResponseCreatePayload:
     def __init__(
         self,
+        type: int,
+        data: InteractionCallbackData | None = None,
         interaction: ChatInputCommandInteraction | None = None,
-        interaction_response: InteractionResponse | None = None,
     ) -> None:
-        self.type = None
-        self.data = None
-        if interaction is not None:
-            self.type = interaction_response.type
-            self.data = interaction_response.data
-
+        """
+        to set right values please refer to
+        https://discord.com/developers/docs/interactions/receiving-and-responding#create-interaction-response
+        """
+        self.type = type
+        self.data = data
         self.interaction = interaction
 
     @classmethod
@@ -26,13 +28,13 @@ class DiscordBotInteractionResponseCreatePayload:
         if interaction is not None:
             interaction = ChatInputCommandInteraction.from_dict(interaction)
 
-        interaction_response = InteractionResponse.from_dict(
-            {"type": type, "data": data}
-        )
+        if data is not None:
+            data = InteractionCallbackData.from_dict(data)
 
         return cls(
+            type=type,
+            data=data,
             interaction=interaction,
-            interaction_response=interaction_response,
         )
 
     def to_dict(self):
@@ -43,8 +45,12 @@ class DiscordBotInteractionResponseEditPayload:
     def __init__(
         self,
         interaction: ChatInputCommandInteraction | None = None,
-        data: InteractionCallbackData | None = None,
+        data: InteractionResponseEditData | None = None,
     ) -> None:
+        """
+        to set the right values please refer to
+        https://discord.com/developers/docs/interactions/receiving-and-responding#edit-original-interaction-response
+        """
         self.data = data
         self.interaction = interaction
 
@@ -56,7 +62,7 @@ class DiscordBotInteractionResponseEditPayload:
         if interaction is not None:
             interaction = ChatInputCommandInteraction.from_dict(interaction)
 
-        data = InteractionCallbackData.from_dict(data)
+        data = InteractionResponseEditData.from_dict(data)
 
         return cls(interaction=interaction, data=data)
 
@@ -69,6 +75,10 @@ class DiscordBotInteractionResponseDeletePayload:
         self,
         interaction: ChatInputCommandInteraction | None = None,
     ) -> None:
+        """
+        to set the values right please refer to
+        https://discord.com/developers/docs/interactions/receiving-and-responding#delete-original-interaction-response
+        """
         self.interaction = interaction
 
     @classmethod
@@ -84,6 +94,33 @@ class DiscordBotInteractionResponseDeletePayload:
         return {"interaction": self.interaction}
 
 
+class DiscordBotFollowUpMessageCreatePayload:
+    def __init__(
+        self, interaction: ChatInputCommandInteraction, data: FollowUpMessageData
+    ) -> None:
+        """
+        to set the values right please refer to
+        https://discord.com/developers/docs/interactions/receiving-and-responding#create-followup-message
+        """
+        self.interaction = interaction
+        self.data = data
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "DiscordBotFollowUpMessageCreatePayload":
+        interaction = d.get("interaction")
+        data = d.get("data")
+
+        if interaction:
+            interaction = ChatInputCommandInteraction.from_dict(interaction)
+        if data:
+            data = FollowUpMessageData.from_dict(data)
+
+        return cls(interaction=interaction, data=data)
+
+    def to_dict(self):
+        return {"interaction": self.interaction, "data": self.data}
+
+
 class DiscordInteractionResponsePayload:
     Create = DiscordBotInteractionResponseCreatePayload
     Edit = DiscordBotInteractionResponseEditPayload
@@ -91,4 +128,4 @@ class DiscordInteractionResponsePayload:
 
 
 class DiscordFollowUpMessage:
-    Create = DiscordBotInteractionResponseEditPayload
+    Create = DiscordBotFollowUpMessageCreatePayload

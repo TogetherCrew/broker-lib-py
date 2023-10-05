@@ -37,6 +37,10 @@ class ChatInputCommandInteraction:
         options: dict | None = None,
         version: int | None = None,
     ) -> None:
+        """
+        to set the values right please refer to
+        https://old.discordjs.dev/#/docs/discord.js/14.13.0/class/ChatInputCommandInteraction
+        """
         self.id = id
         self.application_id = application_id
         self.app_permissions = app_permissions

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from tc_messageBroker.rabbit_mq.payload.discord_bot.interaction import (
+from tc_messageBroker.rabbit_mq.payload.discord_bot.chat_input_interaction import (
     ChatInputCommandInteraction,
 )
 from tc_messageBroker.rabbit_mq.payload.discord_bot.type import InteractionType

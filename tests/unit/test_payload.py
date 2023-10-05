@@ -3,6 +3,7 @@ from tc_messageBroker.rabbit_mq.payload.payload_microservices import (
     DiscordBotInteractionResponseCreatePayload,
     DiscordBotInteractionResponseEditPayload,
     DiscordBotInteractionResponseDeletePayload,
+    DiscordBotFollowUpMessageCreatePayload,
 )
 
 
@@ -24,5 +25,5 @@ def test_available_payloads():
     )
     assert (
         Payload.DISCORD_BOT.FOLLOWUP_MESSAGE.Create
-        == DiscordBotInteractionResponseEditPayload
+        == DiscordBotFollowUpMessageCreatePayload
     )

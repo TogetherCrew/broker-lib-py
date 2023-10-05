@@ -13,6 +13,13 @@ class InteractionCallbackData:
         components: list[dict] | None = None,
         attachments: list[Attachment] | None = None,
     ) -> None:
+        """
+        to set the right values please refer to
+        https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure
+
+        for `components` please refer to
+        https://discord.com/developers/docs/interactions/message-components
+        """
         self.tts = tts
         self.content = content
         self.embeds = embeds
@@ -33,13 +40,14 @@ class InteractionCallbackData:
                 Attachment.from_dict(attachment) for attachment in attachments
             ]
 
+        component = d.get("components")
         return cls(
             tts=d.get("tts"),
             content=d.get("content"),
             embeds=embeds,
             allowed_mentions=d.get("allowed_mentions"),
             flags=d.get("flags"),
-            components=d.get("components"),
+            components=component,
             attachments=attachments,
         )
 

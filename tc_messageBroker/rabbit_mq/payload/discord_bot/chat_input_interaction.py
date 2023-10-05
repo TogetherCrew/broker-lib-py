@@ -82,7 +82,7 @@ class ChatInputCommandInteraction:
 
         guild = data.get("guild")
         if guild is not None:
-            guild = Guild.from_dict(data.get("guild"))
+            guild = Guild.from_dict(guild)
 
         user = data.get("user")
         if user is not None:
@@ -122,23 +122,34 @@ class ChatInputCommandInteraction:
     def to_dict(self) -> dict:
         data = {
             "id": self.id,
-            "applicationId": self.application_id,
-            "type": self.type,
-            "channel": self.channel,
-            "channelId": self.channel_id,
-            "token": self.token,
-            "guildId": self.guild_id,
-            "user": self.user.to_dict(),
-            "createdAt": self.created_at.isoformat(),
-            "deferred": self.deferred,
-            "replied": self.replied,
-            "webhook": self.webhook,
         }
-        if self.member:
+        if self.application_id is not None:
+            data["applicationId"] = self.application_id
+        if self.type is not None:
+            data["type"] = self.type
+        if self.channel is not None:
+            data["channel"] = self.channel
+        if self.channel_id is not None:
+            data["channelId"] = self.channel_id
+        if self.token is not None:
+            data["token"] = self.token
+        if self.deferred is not None:
+            data["deferred"] = self.deferred
+        if self.guild_id is not None:
+            data["guildId"] = self.guild_id
+        if self.replied is not None:
+            data["replied"] = self.replied
+        if self.webhook is not None:
+            data["webhook"] = self.webhook
+        if self.user is not None:
+            data["user"] = self.user.to_dict()
+        if self.created_at is not None:
+            data["createdAt"] = self.created_at.isoformat()
+        if self.member is not None:
             data["member"] = self.member
         if self.ephemeral is not None:
             data["ephemeral"] = self.ephemeral
-        if self.guild:
+        if self.guild is not None:
             data["guild"] = self.guild.to_dict()
         if self.created_time_stamp is not None:
             data["created_time_stamp"] = self.created_time_stamp
@@ -166,4 +177,5 @@ class ChatInputCommandInteraction:
             data["options"] = self.options
         if self.version is not None:
             data["version"] = self.version
+        
         return data

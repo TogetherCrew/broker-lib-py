@@ -20,7 +20,7 @@ class User:
         accent_color: int | None = None,
         display_name: str | None = None,
         dm_channel: dict | None = None,
-        flags: BitFields | None = None,
+        flags: int | None = None,
         global_name: str | None = None,
         hex_accent_color: str | None = None,
         system: bool | None = None,
@@ -54,10 +54,6 @@ class User:
         if created_at is not None:
             created_at = datetime.fromisoformat(created_at)
 
-        bit_fields = data.get("flags")
-        if bit_fields is not None:
-            bit_fields = BitFields.from_dict(data.get("flags"))
-
         return cls(
             id=data["id"],
             created_at=created_at,
@@ -73,7 +69,7 @@ class User:
             accent_color=data.get("accent_color"),
             display_name=data.get("display_name"),
             dm_channel=data.get("dm_channel"),
-            flags=bit_fields,
+            flags=data.get("flags"),
             global_name=data.get("global_name"),
             hex_accent_color=data.get("hex_accent_color"),
             system=data.get("system"),
@@ -82,9 +78,13 @@ class User:
         )
 
     def to_dict(self) -> dict:
+        created_at = self.created_at
+        if self.created_at is not None:
+            created_at = self.created_at.isoformat()
+
         data = {
             "id": self.id,
-            "created_at": self.created_at.isoformat(),
+            "created_at": created_at,
             "client": self.client,
             "default_avatar_url": self.default_avatar_url,
             "partial": self.partial,
@@ -97,7 +97,7 @@ class User:
             "accent_color": self.accent_color,
             "display_name": self.display_name,
             "dm_channel": self.dm_channel,
-            "flags": self.flags.to_dict(),
+            "flags": self.flags,
             "global_name": self.global_name,
             "hex_accent_color": self.hex_accent_color,
             "system": self.system,

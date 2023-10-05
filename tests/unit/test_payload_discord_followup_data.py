@@ -1,14 +1,14 @@
 import unittest
-from tc_messageBroker.rabbit_mq.payload.discord_bot.create_followup_message_data import (
-    FollowUpMessageData,
-)
+
 from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.allowed_mentions import (
     AllowedMentions,
 )
 from tc_messageBroker.rabbit_mq.payload.discord_bot.base_types.attachment import (
     Attachment,
 )
-
+from tc_messageBroker.rabbit_mq.payload.discord_bot.create_followup_message_data import (
+    FollowUpMessageData,
+)
 
 class TestDiscordMessage(unittest.TestCase):
     def test_param_setting_empty_all(self):

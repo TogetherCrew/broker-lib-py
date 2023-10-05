@@ -1,9 +1,9 @@
 from tc_messageBroker.rabbit_mq.payload.payload import Payload
 from tc_messageBroker.rabbit_mq.payload.payload_microservices import (
+    DiscordBotFollowUpMessageCreatePayload,
     DiscordBotInteractionResponseCreatePayload,
     DiscordBotInteractionResponseDeletePayload,
     DiscordBotInteractionResponseEditPayload,
-    DiscordBotFollowUpMessageCreatePayload,
 )
 
 

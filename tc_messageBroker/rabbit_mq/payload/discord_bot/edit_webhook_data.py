@@ -1,5 +1,5 @@
-from .base_types.attachment import Attachment
 from .base_types.allowed_mentions import AllowedMentions
+from .base_types.attachment import Attachment
 from .base_types.embed import Embed
 
 

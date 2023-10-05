@@ -24,7 +24,8 @@ class Member:
         self.avatar = avatar
         self.flags = flags
 
-    def from_dict(self, member_dict: dict, guild: Guild):
+    @classmethod
+    def from_dict(cls, member_dict: dict, guild: Guild):
         """
         convert the dicrionary data into the Member class instance
         Note that the keys should follow the camelCase format
@@ -41,7 +42,7 @@ class Member:
         member : Member
             the class instance
         """
-        return Member(
+        return cls(
             guild=guild,
             joined_timestamp=member_dict.get("joinedTimestamp"),
             premium_since_timestamp=member_dict.get("premiumSubscriptionCount"),
@@ -54,7 +55,7 @@ class Member:
             flags=member_dict.get("flags"),
         )
 
-    def to_dict(member) -> dict:
+    def to_dict(self) -> dict:
         """
         convert the class data into a dictionary
         Note that the keys would follow the camelCase format
@@ -70,11 +71,11 @@ class Member:
             the class data converted to dictionary
         """
         return {
-            "joinedTimestamp": member.joined_timestamp,
-            "premiumSubscriptionCount": member.premium_since_timestamp,
-            "nickname": member.nickname,
-            "pending": member.pending,
-            "communicationDisabledUntilTimestamp": member.communication_disabled_until_timestamp,
-            "avatar": member.avatar,
-            "flags": member.flags,
+            "joinedTimestamp": self.joined_timestamp,
+            "premiumSubscriptionCount": self.premium_since_timestamp,
+            "nickname": self.nickname,
+            "pending": self.pending,
+            "communicationDisabledUntilTimestamp": self.communication_disabled_until_timestamp,
+            "avatar": self.avatar,
+            "flags": self.flags,
         }

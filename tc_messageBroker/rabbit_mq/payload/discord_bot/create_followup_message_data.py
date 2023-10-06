@@ -55,7 +55,7 @@ class FollowUpMessageData:
             data["allowed_mentions"] = str(self.allowed_mentions.to_dict())
         if self.components is not None:
             # data["components"] = [component.to_dict() for component in self.components]
-            data["components"] = self.components
+            data["components"] = self.components  # type: ignore
         if self.files is not None:
             data["files"] = self.files  # type: ignore
         if self.payload_json is not None:

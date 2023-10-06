@@ -153,69 +153,75 @@ class Guild:
         if self.icon is not None:
             data["icon"] = self.icon
         if self.features is not None:
-            data["features"] = str(self.features)
+            data["features"] = self.features  # type: ignore
         if self.available is not None:
-            data["available"] = str(self.available)
+            data["available"] = self.available  # type: ignore
         if self.shard_id is not None:
-            data["shardId"] = str(self.shard_id)
+            data["shardId"] = self.shard_id  # type: ignore
         if self.splash is not None:
-            data["splash"] = str(self.splash)
+            data["splash"] = self.splash  # type: ignore
         if self.banner is not None:
-            data["banner"] = str(self.banner)
+            data["banner"] = self.banner  # type: ignore
         if self.description is not None:
-            data["description"] = str(self.description)
+            data["description"] = self.description  # type: ignore
         if self.verification_level is not None:
-            data["verificationLevel"] = str(self.verification_level)
+            data["verificationLevel"] = self.verification_level  # type: ignore
         if self.vanity_url_code is not None:
-            data["vanityURLCode"] = str(self.vanity_url_code)
+            data["vanityURLCode"] = self.vanity_url_code  # type: ignore
         if self.nsfw_level is not None:
-            data["nsfwLevel"] = str(self.nsfw_level)
+            data["nsfwLevel"] = self.nsfw_level  # type: ignore
         if self.premium_subscription_count is not None:
-            data["premiumSubscriptionCount"] = str(self.premium_subscription_count)
+            data[
+                "premiumSubscriptionCount"
+            ] = self.premium_subscription_count  # type: ignore
         if self.discovery_splash is not None:
-            data["discoverySplash"] = str(self.discovery_splash)
+            data["discoverySplash"] = self.discovery_splash  # type: ignore
         if self.member_count is not None:
-            data["memberCount"] = str(self.member_count)
+            data["memberCount"] = self.member_count  # type: ignore
         if self.large is not None:
-            data["large"] = str(self.large)
+            data["large"] = self.large  # type: ignore
         if self.premium_progress_bar_enabled is not None:
-            data["premiumProgressBarEnabled"] = str(self.premium_progress_bar_enabled)
+            data[
+                "premiumProgressBarEnabled"
+            ] = self.premium_progress_bar_enabled  # type: ignore
         if self.application_id is not None:
-            data["applicationId"] = str(self.application_id)
+            data["applicationId"] = self.application_id  # type: ignore
         if self.afk_timeout is not None:
-            data["afkTimeout"] = str(self.afk_timeout)
+            data["afkTimeout"] = self.afk_timeout  # type: ignore
         if self.afk_channel_id is not None:
-            data["afkChannelId"] = str(self.afk_channel_id)
+            data["afkChannelId"] = self.afk_channel_id  # type: ignore
         if self.system_channel_id is not None:
-            data["systemChannelId"] = str(self.system_channel_id)
+            data["systemChannelId"] = self.system_channel_id  # type: ignore
         if self.premium_tier is not None:
-            data["premiumTier"] = str(self.premium_tier)
+            data["premiumTier"] = self.premium_tier  # type: ignore
         if self.widget_enabled is not None:
-            data["widgetEnabled"] = str(self.widget_enabled)
+            data["widgetEnabled"] = self.widget_enabled  # type: ignore
         if self.widget_channel_id is not None:
-            data["widgetChannelId"] = str(self.widget_channel_id)
+            data["widgetChannelId"] = self.widget_channel_id  # type: ignore
         if self.explicit_content_filter is not None:
-            data["explicitContentFilter"] = str(self.explicit_content_filter)
+            data["explicitContentFilter"] = self.explicit_content_filter  # type: ignore
         if self.mfa_level is not None:
-            data["mfaLevel"] = str(self.mfa_level)
+            data["mfaLevel"] = self.mfa_level  # type: ignore
         if self.joined_timestamp is not None:
-            data["joinedTimestamp"] = str(self.joined_timestamp)
+            data["joinedTimestamp"] = self.joined_timestamp  # type: ignore
         if self.default_message_notifications is not None:
-            data["defaultMessageNotifications"] = str(
-                self.default_message_notifications
-            )
+            data[
+                "defaultMessageNotifications"
+            ] = self.default_message_notifications  # type: ignore
         if self.maximum_members is not None:
-            data["maximumMembers"] = str(self.maximum_members)
+            data["maximumMembers"] = self.maximum_members  # type: ignore
         if self.max_video_channel_users is not None:
-            data["maxVideoChannelUsers"] = str(self.max_video_channel_users)
+            data["maxVideoChannelUsers"] = self.max_video_channel_users  # type: ignore
         if self.max_stage_video_channel_users is not None:
-            data["maxStageVideoChannelUsers"] = str(self.max_stage_video_channel_users)
+            data[
+                "maxStageVideoChannelUsers"
+            ] = self.max_stage_video_channel_users  # type: ignore
         if self.approximate_member_count is not None:
-            data["approximateMemberCount"] = str(self.approximate_member_count)
+            data["approximateMemberCount"] = self.approximate_member_count  # type: ignore
         if self.approximate_presence_count is not None:
-            data["approximatePresenceCount"] = str(self.approximate_presence_count)
+            data["approximatePresenceCount"] = self.approximate_presence_count  # type: ignore
         if self.vanity_url_uses is not None:
-            data["vanityURLUses"] = str(self.vanity_url_uses)
+            data["vanityURLUses"] = self.vanity_url_uses  # type: ignore
         if self.rules_channel_id is not None:
             data["rulesChannelId"] = self.rules_channel_id
         if self.public_updates_channel_id is not None:

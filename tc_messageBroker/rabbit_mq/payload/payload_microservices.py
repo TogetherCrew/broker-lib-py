@@ -67,7 +67,7 @@ class DiscordBotInteractionResponseEditPayload:
                 interaction
             )  # type: ignore
 
-        data = InteractionResponseEditData.from_dict(data)
+        data = InteractionResponseEditData.from_dict(data)  # type: ignore
 
         return cls(interaction=interaction, data=data)
 

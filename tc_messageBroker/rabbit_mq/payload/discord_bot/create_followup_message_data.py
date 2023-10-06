@@ -48,24 +48,24 @@ class FollowUpMessageData:
         if self.avatar_url is not None:
             data["avatar_url"] = self.avatar_url
         if self.tts is not None:
-            data["tts"] = str(self.tts)
+            data["tts"] = self.tts  # type: ignore
         if self.embeds is not None:
-            data["embeds"] = str([embed.to_dict() for embed in self.embeds])
+            data["embeds"] = [embed.to_dict() for embed in self.embeds]  # type: ignore
         if self.allowed_mentions is not None:
             data["allowed_mentions"] = str(self.allowed_mentions.to_dict())
         if self.components is not None:
             # data["components"] = [component.to_dict() for component in self.components]
-            data["components"] = str(self.components)
+            data["components"] = self.components
         if self.files is not None:
-            data["files"] = str(self.files)
+            data["files"] = self.files  # type: ignore
         if self.payload_json is not None:
             data["payload_json"] = self.payload_json
         if self.attachments is not None:
-            data["attachments"] = str(
-                [attachment.to_dict() for attachment in self.attachments]
-            )
+            data["attachments"] = [
+                attachment.to_dict() for attachment in self.attachments
+            ]  # type: ignore
         if self.flags is not None:
-            data["flags"] = str(self.flags)
+            data["flags"] = self.flags  # type: ignore
         if self.thread_name is not None:
             data["thread_name"] = self.thread_name
         return data

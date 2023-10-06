@@ -31,6 +31,9 @@ class DiscordBotInteractionResponseCreatePayload:
         if data is not None:
             data = InteractionCallbackData.from_dict(data)
 
+        if type is not None:
+            type = int(type)
+
         return cls(
             type=type,
             data=data,
@@ -60,7 +63,9 @@ class DiscordBotInteractionResponseEditPayload:
         data = d.get("data")
 
         if interaction is not None:
-            interaction = ChatInputCommandInteraction.from_dict(interaction)
+            interaction = ChatInputCommandInteraction.from_dict(
+                interaction
+            )  # type: ignore
 
         data = InteractionResponseEditData.from_dict(data)
 

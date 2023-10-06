@@ -16,7 +16,7 @@ class FollowUpMessageData:
         files: list[dict] | None = None,
         payload_json: str | None = None,
         attachments: list[Attachment] | None = None,
-        flags: int = None,
+        flags: int | None = None,
         thread_name: str | None = None,
     ):
         """
@@ -48,24 +48,24 @@ class FollowUpMessageData:
         if self.avatar_url is not None:
             data["avatar_url"] = self.avatar_url
         if self.tts is not None:
-            data["tts"] = self.tts
+            data["tts"] = str(self.tts)
         if self.embeds is not None:
-            data["embeds"] = [embed.to_dict() for embed in self.embeds]
+            data["embeds"] = str([embed.to_dict() for embed in self.embeds])
         if self.allowed_mentions is not None:
-            data["allowed_mentions"] = self.allowed_mentions.to_dict()
+            data["allowed_mentions"] = str(self.allowed_mentions.to_dict())
         if self.components is not None:
             # data["components"] = [component.to_dict() for component in self.components]
-            data["components"] = self.components
+            data["components"] = str(self.components)
         if self.files is not None:
-            data["files"] = self.files
+            data["files"] = str(self.files)
         if self.payload_json is not None:
             data["payload_json"] = self.payload_json
         if self.attachments is not None:
-            data["attachments"] = [
-                attachment.to_dict() for attachment in self.attachments
-            ]
+            data["attachments"] = str(
+                [attachment.to_dict() for attachment in self.attachments]
+            )
         if self.flags is not None:
-            data["flags"] = self.flags
+            data["flags"] = str(self.flags)
         if self.thread_name is not None:
             data["thread_name"] = self.thread_name
         return data

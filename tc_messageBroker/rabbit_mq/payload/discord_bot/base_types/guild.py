@@ -153,67 +153,69 @@ class Guild:
         if self.icon is not None:
             data["icon"] = self.icon
         if self.features is not None:
-            data["features"] = self.features
+            data["features"] = str(self.features)
         if self.available is not None:
-            data["available"] = self.available
+            data["available"] = str(self.available)
         if self.shard_id is not None:
-            data["shardId"] = self.shard_id
+            data["shardId"] = str(self.shard_id)
         if self.splash is not None:
-            data["splash"] = self.splash
+            data["splash"] = str(self.splash)
         if self.banner is not None:
-            data["banner"] = self.banner
+            data["banner"] = str(self.banner)
         if self.description is not None:
-            data["description"] = self.description
+            data["description"] = str(self.description)
         if self.verification_level is not None:
-            data["verificationLevel"] = self.verification_level
+            data["verificationLevel"] = str(self.verification_level)
         if self.vanity_url_code is not None:
-            data["vanityURLCode"] = self.vanity_url_code
+            data["vanityURLCode"] = str(self.vanity_url_code)
         if self.nsfw_level is not None:
-            data["nsfwLevel"] = self.nsfw_level
+            data["nsfwLevel"] = str(self.nsfw_level)
         if self.premium_subscription_count is not None:
-            data["premiumSubscriptionCount"] = self.premium_subscription_count
+            data["premiumSubscriptionCount"] = str(self.premium_subscription_count)
         if self.discovery_splash is not None:
-            data["discoverySplash"] = self.discovery_splash
+            data["discoverySplash"] = str(self.discovery_splash)
         if self.member_count is not None:
-            data["memberCount"] = self.member_count
+            data["memberCount"] = str(self.member_count)
         if self.large is not None:
-            data["large"] = self.large
+            data["large"] = str(self.large)
         if self.premium_progress_bar_enabled is not None:
-            data["premiumProgressBarEnabled"] = self.premium_progress_bar_enabled
+            data["premiumProgressBarEnabled"] = str(self.premium_progress_bar_enabled)
         if self.application_id is not None:
-            data["applicationId"] = self.application_id
+            data["applicationId"] = str(self.application_id)
         if self.afk_timeout is not None:
-            data["afkTimeout"] = self.afk_timeout
+            data["afkTimeout"] = str(self.afk_timeout)
         if self.afk_channel_id is not None:
-            data["afkChannelId"] = self.afk_channel_id
+            data["afkChannelId"] = str(self.afk_channel_id)
         if self.system_channel_id is not None:
-            data["systemChannelId"] = self.system_channel_id
+            data["systemChannelId"] = str(self.system_channel_id)
         if self.premium_tier is not None:
-            data["premiumTier"] = self.premium_tier
+            data["premiumTier"] = str(self.premium_tier)
         if self.widget_enabled is not None:
-            data["widgetEnabled"] = self.widget_enabled
+            data["widgetEnabled"] = str(self.widget_enabled)
         if self.widget_channel_id is not None:
-            data["widgetChannelId"] = self.widget_channel_id
+            data["widgetChannelId"] = str(self.widget_channel_id)
         if self.explicit_content_filter is not None:
-            data["explicitContentFilter"] = self.explicit_content_filter
+            data["explicitContentFilter"] = str(self.explicit_content_filter)
         if self.mfa_level is not None:
-            data["mfaLevel"] = self.mfa_level
+            data["mfaLevel"] = str(self.mfa_level)
         if self.joined_timestamp is not None:
-            data["joinedTimestamp"] = self.joined_timestamp
+            data["joinedTimestamp"] = str(self.joined_timestamp)
         if self.default_message_notifications is not None:
-            data["defaultMessageNotifications"] = self.default_message_notifications
+            data["defaultMessageNotifications"] = str(
+                self.default_message_notifications
+            )
         if self.maximum_members is not None:
-            data["maximumMembers"] = self.maximum_members
+            data["maximumMembers"] = str(self.maximum_members)
         if self.max_video_channel_users is not None:
-            data["maxVideoChannelUsers"] = self.max_video_channel_users
+            data["maxVideoChannelUsers"] = str(self.max_video_channel_users)
         if self.max_stage_video_channel_users is not None:
-            data["maxStageVideoChannelUsers"] = self.max_stage_video_channel_users
+            data["maxStageVideoChannelUsers"] = str(self.max_stage_video_channel_users)
         if self.approximate_member_count is not None:
-            data["approximateMemberCount"] = self.approximate_member_count
+            data["approximateMemberCount"] = str(self.approximate_member_count)
         if self.approximate_presence_count is not None:
-            data["approximatePresenceCount"] = self.approximate_presence_count
+            data["approximatePresenceCount"] = str(self.approximate_presence_count)
         if self.vanity_url_uses is not None:
-            data["vanityURLUses"] = self.vanity_url_uses
+            data["vanityURLUses"] = str(self.vanity_url_uses)
         if self.rules_channel_id is not None:
             data["rulesChannelId"] = self.rules_channel_id
         if self.public_updates_channel_id is not None:

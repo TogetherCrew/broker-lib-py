@@ -42,9 +42,10 @@ class InteractionResponseEditData:
         if self.allowed_mentions is not None:
             data_dict["allowed_mentions"] = self.allowed_mentions.to_dict()
         if self.components is not None:
-            data_dict["components"] = [
-                [comp.to_dict() for comp in row] for row in self.components
-            ]
+            # data_dict["components"] = [
+            #     [comp.to_dict() for comp in row] for row in self.components
+            # ]
+            data_dict["components"] = self.components
         if self.files is not None:
             data_dict["files"] = self.files
         if self.payload_json is not None:

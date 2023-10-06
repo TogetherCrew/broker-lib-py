@@ -1,7 +1,7 @@
 class Attachment:
     def __init__(
         self,
-        id: int,
+        id: str,
         filename: str | None = None,
         description: str | None = None,
         content_type: str | None = None,
@@ -32,7 +32,7 @@ class Attachment:
     @classmethod
     def from_dict(cls, d: dict):
         return cls(
-            id=d.get("id"),
+            id=d["id"],
             filename=d.get("filename"),
             description=d.get("description"),
             content_type=d.get("content_type"),

@@ -121,7 +121,7 @@ class ChatInputCommandInteraction:
         )
 
     def to_dict(self) -> dict[str, Any]:
-        data : dict[str, Any] = {
+        data: dict[str, Any] = {
             "id": self.id,
         }
         if self.application_id is not None:

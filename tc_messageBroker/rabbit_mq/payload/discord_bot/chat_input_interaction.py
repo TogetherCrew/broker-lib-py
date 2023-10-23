@@ -153,27 +153,27 @@ class ChatInputCommandInteraction:
         if self.guild is not None:
             data["guild"] = self.guild.to_dict()
         if self.created_time_stamp is not None:
-            data["created_time_stamp"] = self.created_time_stamp
+            data["createdTimestamp"] = self.created_time_stamp
         if self.app_permissions is not None:
-            data["app_permissions"] = self.app_permissions
+            data["appPermissions"] = self.app_permissions
         if self.locale is not None:
             data["locale"] = self.locale
         if self.guild_locale is not None:
-            data["guild_locale"] = self.guild_locale
+            data["guildLocale"] = self.guild_locale
         if self.client is not None:
             data["client"] = self.client
         if self.command is not None:
             data["command"] = self.command
         if self.command_id is not None:
-            data["command_id"] = self.command_id
+            data["commandId"] = self.command_id
         if self.command_name is not None:
-            data["command_name"] = self.command_name
+            data["commandName"] = self.command_name
         if self.command_type is not None:
-            data["command_type"] = self.command_type
+            data["commandType"] = self.command_type
         if self.command_guild_id is not None:
-            data["command_guild_id"] = self.command_guild_id
+            data["commandGuildId"] = self.command_guild_id
         if self.member_permissions is not None:
-            data["member_permissions"] = self.member_permissions
+            data["memberPermissions"] = self.member_permissions
         if self.options is not None:
             data["options"] = self.options
         if self.version is not None:

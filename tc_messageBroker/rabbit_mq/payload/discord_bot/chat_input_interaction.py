@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Any
 
-from .base_types.flags import PermissionsBitField
 from .base_types.guild import Guild
 from .base_types.user import User
 

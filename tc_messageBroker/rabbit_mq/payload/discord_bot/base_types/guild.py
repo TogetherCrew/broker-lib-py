@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Guild:
     def __init__(
         self,
@@ -9,6 +12,11 @@ class Guild:
         shard_id: int | None = None,
         splash: str | None = None,
         banner: str | None = None,
+        channels: list[str] | None = None,
+        members: list[str] | None = None,
+        roles: list[str] | None = None,
+        commands: Any | None = None,
+        bans: Any | None = None,
         description: str | None = None,
         verification_level: int | None = None,
         vanity_url_code: str | None = None,
@@ -46,6 +54,11 @@ class Guild:
         self.icon = icon
         self.features = features
         self.available = available
+        self.members = members
+        self.channels = channels
+        self.roles = roles
+        self.commands = commands
+        self.bans = bans
         self.shard_id = shard_id
         self.splash = splash
         self.banner = banner
@@ -92,6 +105,11 @@ class Guild:
             name=guild_dict.get("name"),
             icon=guild_dict.get("icon"),
             features=guild_dict.get("features", []),
+            channels=guild_dict.get("channels"),
+            members=guild_dict.get("members"),
+            roles=guild_dict.get("roles"),
+            commands=guild_dict.get("commands"),
+            bans=guild_dict.get("bans"),
             available=guild_dict.get("available"),
             shard_id=guild_dict.get("shardId"),
             splash=guild_dict.get("splash"),
@@ -232,5 +250,15 @@ class Guild:
             data["safetyAlertsChannelId"] = self.safety_alerts_channel_id
         if self.owner_id is not None:
             data["ownerId"] = self.owner_id
+        if self.channels is not None:
+            data["channels"] = self.channels  # type: ignore
+        if self.members is not None:
+            data["members"] = self.members  # type: ignore
+        if self.roles is not None:
+            data["roles"] = self.roles  # type: ignore
+        if self.commands is not None:
+            data["commands"] = self.commands
+        if self.bans is not None:
+            data["bans"] = self.bans
 
         return data

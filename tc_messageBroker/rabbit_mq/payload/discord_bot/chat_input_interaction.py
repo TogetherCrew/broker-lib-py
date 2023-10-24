@@ -33,8 +33,8 @@ class ChatInputCommandInteraction:
         command_id: str | None = None,
         command_name: str | None = None,
         command_type: dict | None = None,
-        command_guild_id: dict | None = None,
-        member_permissions: PermissionsBitField | None = None,
+        command_guild_id: str | None = None,
+        member_permissions: str | None = None,
         options: dict | None = None,
         version: int | None = None,
     ) -> None:
@@ -74,12 +74,10 @@ class ChatInputCommandInteraction:
     @classmethod
     def from_dict(self, data: dict) -> "ChatInputCommandInteraction":
         member_permissions = data.get("memberPermissions")
-        if member_permissions is not None:
-            member_permissions = PermissionsBitField.from_dict(member_permissions)
 
         created_at = data.get("createdAt")
         if created_at is not None:
-            created_at = datetime.fromisoformat(created_at)
+            created_at = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%fZ")
 
         guild = data.get("guild")
         if guild is not None:

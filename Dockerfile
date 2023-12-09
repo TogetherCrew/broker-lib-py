@@ -1,7 +1,14 @@
 FROM python:3.10-bullseye AS base
 WORKDIR /project
-COPY . .
+
+COPY requirements*.txt ./
+COPY setup.py ./
+COPY docker-entrypoint.sh ./
+COPY README.md ./
+
 RUN pip install .
+
+COPY . .
 
 FROM base as test
 RUN chmod +x docker-entrypoint.sh

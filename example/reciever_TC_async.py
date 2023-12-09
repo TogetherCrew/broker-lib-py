@@ -1,8 +1,8 @@
+import asyncio
+
 from tc_messageBroker import RabbitMQ
 from tc_messageBroker.rabbit_mq.event import Event
 from tc_messageBroker.rabbit_mq.queue import Queue
-
-import asyncio
 
 
 def do_something(recieved_data):

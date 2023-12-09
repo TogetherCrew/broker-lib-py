@@ -2,7 +2,6 @@ import os
 import pytest
 from dotenv import load_dotenv
 from tc_messageBroker import RabbitMQ
-from tc_messageBroker.rabbit_mq.event import Event
 
 
 def test_message_broker_connection_singleton():

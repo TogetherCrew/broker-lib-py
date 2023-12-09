@@ -1,3 +1,4 @@
+import asyncio
 import functools
 import json
 import logging
@@ -5,7 +6,6 @@ from datetime import datetime
 from typing import Any, Callable, Optional
 
 import pika
-import asyncio
 
 
 class RabbitMQ:

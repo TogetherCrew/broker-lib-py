@@ -1,3 +1,4 @@
+import asyncio
 import functools
 import json
 import logging
@@ -95,6 +96,19 @@ class RabbitMQ:
             logging.error(f" Something went wrong with RabbitMQ {exp}")
             return False
 
+    async def connect_async(
+        self,
+        queue_name: str,
+        consume_options: Optional[dict[str, Any]] = None,
+        heartbeat: int = 60,
+        **kwargs,
+    ) -> bool:
+        eventLoop = asyncio.get_event_loop()
+
+        return await eventLoop.run_in_executor(
+            None, self.connect, queue_name, consume_options, heartbeat, **kwargs
+        )
+
     def _get_declare_queue_param(self, kwargs):
         """
         kwargs must have `queue_auto_delete`, and `queue_durability`
@@ -188,6 +202,18 @@ class RabbitMQ:
             auto_ack=False,
         )
 
+    async def consume_async(
+        self,
+        queue_name: str,
+        consume_options: Optional[dict[str, Any]] = None,
+        **kwargs,
+    ) -> None:
+        eventLoop = asyncio.get_event_loop()
+
+        return await eventLoop.run_in_executor(
+            None, self.consume, queue_name, consume_options, **kwargs
+        )
+
     def publish(
         self,
         queue_name: str,
@@ -224,6 +250,19 @@ class RabbitMQ:
             properties=options,
         )
 
+    async def publish_async(
+        self,
+        queue_name: str,
+        event: str,
+        content: dict,
+        options: Optional[dict[str, Any]] = None,
+    ) -> None:
+        eventLoop = asyncio.get_event_loop()
+
+        return await eventLoop.run_in_executor(
+            None, self.publish, queue_name, event, content, options
+        )
+
     def on_event(self, event_name: str, on_message: Callable) -> None:
         """
         set a function to be called when an event happened
@@ -237,6 +276,13 @@ class RabbitMQ:
 
         """
         self.event_function[event_name] = on_message
+
+    async def on_event_async(self, event_name: str, on_message: Callable) -> None:
+        eventLoop = asyncio.get_event_loop()
+
+        return await eventLoop.run_in_executor(
+            None, self.on_event, event_name, on_message
+        )
 
     def create_exchange(
         self,

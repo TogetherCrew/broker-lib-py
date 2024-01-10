@@ -34,7 +34,7 @@ class DiscordBotInteractionResponseCreatePayload:
         )
 
     def to_dict(self):
-        return {"data": self.data, "interaction": self.interaction}
+        return {"data": self.data.to_dict(), "interaction": self.interaction}
 
 
 class DiscordBotInteractionResponseEditPayload:

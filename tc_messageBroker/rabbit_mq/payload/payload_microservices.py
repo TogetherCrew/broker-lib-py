@@ -1,7 +1,7 @@
-from .discord_bot.interaction_response import InteractionResponse
 from .discord_bot.chat_input_interaction import ChatInputCommandInteraction
 from .discord_bot.create_followup_message_data import FollowUpMessageData
 from .discord_bot.edit_webhook_data import InteractionResponseEditData
+from .discord_bot.interaction_response import InteractionResponse
 
 
 class DiscordBotInteractionResponseCreatePayload:

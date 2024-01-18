@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Any
 
 from .base_types.guild import Guild
@@ -11,29 +10,29 @@ class ChatInputCommandInteraction:
         id: str,
         application_id: int | None = None,
         type: int | None = None,
+        guild_id: str | None = None,
+        guild: Guild | None = None,
         channel: dict | None = None,
         channel_id: str | None = None,
         token: str | None = None,
-        guild_id: str | None = None,
         user: User | None = None,
-        created_at: datetime | None = None,
+        created_at: Any | None = None,
         deffered: bool | None = None,
         replied: bool | None = None,
         webhook: dict | None = None,
         member: dict | None = None,
         ephemeral: bool | None = None,
-        guild: Guild | None = None,
         created_time_stamp: int | None = None,
-        app_permissions: str | None = None,
+        app_permissions: dict | None = None,
+        member_permissions: dict | None = None,
         locale: str | None = None,
         guild_locale: str | None = None,
         client: dict | None = None,
         command: dict | None = None,
         command_id: str | None = None,
         command_name: str | None = None,
-        command_type: dict | None = None,
+        command_type: int | None = None,
         command_guild_id: str | None = None,
-        member_permissions: str | None = None,
         options: dict | None = None,
         version: int | None = None,
     ) -> None:
@@ -72,12 +71,6 @@ class ChatInputCommandInteraction:
 
     @classmethod
     def from_dict(self, data: dict) -> "ChatInputCommandInteraction":
-        member_permissions = data.get("memberPermissions")
-
-        created_at = data.get("createdAt")
-        if created_at is not None:
-            created_at = datetime.strptime(created_at, "%Y-%m-%dT%H:%M:%S.%fZ")
-
         guild = data.get("guild")
         if guild is not None:
             guild = Guild.from_dict(guild)
@@ -95,7 +88,7 @@ class ChatInputCommandInteraction:
             token=data.get("token"),
             guild_id=data.get("guildId"),
             user=user,
-            created_at=created_at,
+            created_at=data.get("createdAt"),
             deffered=data.get("deferred"),
             replied=data.get("replied"),
             webhook=data.get("webhook"),
@@ -112,7 +105,7 @@ class ChatInputCommandInteraction:
             command_name=data.get("commandName"),
             command_type=data.get("commandType"),
             command_guild_id=data.get("commandGuildId"),
-            member_permissions=member_permissions,
+            member_permissions=data.get("memberPermissions"),
             options=data.get("options"),
             version=data.get("version"),
         )
@@ -142,7 +135,7 @@ class ChatInputCommandInteraction:
         if self.user is not None:
             data["user"] = self.user.to_dict()
         if self.created_at is not None:
-            data["createdAt"] = self.created_at.isoformat()
+            data["createdAt"] = self.created_at
         if self.member is not None:
             data["member"] = self.member
         if self.ephemeral is not None:

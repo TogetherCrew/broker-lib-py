@@ -165,14 +165,14 @@ def test_team_member_all_inputs_filled():
         member={"sample": "membersample"},
         ephemeral=True,
         created_time_stamp=time.timestamp(),
-        app_permissions="permission #1",
+        app_permissions={"bitfield": "permission #1"},
         locale="En",
         guild_locale="en",
         client={"sampleClient": "erfa"},
         command={"ping": "pong"},
         command_name={"ping_name": "pong_name"},
-        command_type={"command_type": "type"},
-        command_guild_id={"AI guys": "1232"},
+        command_type=626262626,
+        command_guild_id="1234",
         member_permissions={"permission": "101"},
         options={"sample": {"one": "1"}},
         version=1,
@@ -194,14 +194,14 @@ def test_team_member_all_inputs_filled():
     assert ch_interaction.member == {"sample": "membersample"}
     assert ch_interaction.ephemeral is True
     assert ch_interaction.created_time_stamp == time.timestamp()
-    assert ch_interaction.app_permissions == "permission #1"
+    assert ch_interaction.app_permissions == {"bitfield": "permission #1"}
     assert ch_interaction.locale == "En"
     assert ch_interaction.guild_locale == "en"
     assert ch_interaction.client == {"sampleClient": "erfa"}
     assert ch_interaction.command == {"ping": "pong"}
     assert ch_interaction.command_name == {"ping_name": "pong_name"}
-    assert ch_interaction.command_type == {"command_type": "type"}
-    assert ch_interaction.command_guild_id == {"AI guys": "1232"}
+    assert ch_interaction.command_type == 626262626
+    assert ch_interaction.command_guild_id == "1234"
     assert ch_interaction.member_permissions == {"permission": "101"}
     assert ch_interaction.options == {"sample": {"one": "1"}}
     assert ch_interaction.version == 1

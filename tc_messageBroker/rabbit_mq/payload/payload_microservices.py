@@ -34,7 +34,7 @@ class DiscordBotInteractionResponseCreatePayload:
         )
 
     def to_dict(self):
-        return {"data": self.data.to_dict(), "interaction": self.interaction}
+        return {"data": self.data.to_dict(), "interaction": self.interaction.to_dict()}
 
 
 class DiscordBotInteractionResponseEditPayload:
@@ -65,7 +65,7 @@ class DiscordBotInteractionResponseEditPayload:
         return cls(interaction=interaction, data=data)
 
     def to_dict(self):
-        return {"data": self.data, "interaction": self.interaction}
+        return {"data": self.data.to_dict(), "interaction": self.interaction.to_dict()}
 
 
 class DiscordBotInteractionResponseDeletePayload:
@@ -89,7 +89,7 @@ class DiscordBotInteractionResponseDeletePayload:
         return cls(interaction=interaction)
 
     def to_dict(self):
-        return {"interaction": self.interaction}
+        return {"interaction": self.interaction.to_dict()}
 
 
 class DiscordBotFollowUpMessageCreatePayload:
@@ -116,7 +116,7 @@ class DiscordBotFollowUpMessageCreatePayload:
         return cls(interaction=interaction, data=data)
 
     def to_dict(self):
-        return {"interaction": self.interaction, "data": self.data}
+        return {"interaction": self.interaction.to_dict(), "data": self.data.to_dict()}
 
 
 class DiscordInteractionResponsePayload:

@@ -10,6 +10,7 @@ from tc_messageBroker.rabbit_mq.status import Status
 from .choreography_base import IChoreography
 from .transaction_base import ITransaction
 from .utils.saga_base_utils import convert_tx_dict, get_transactions
+from tc_messageBroker.utils.credentials import load_mongo_credentials
 
 
 class Saga:
@@ -56,8 +57,8 @@ class Saga:
         self,
         publish_method: Callable,
         call_function: Callable,
-        mongo_creds: dict[str, Any],
-        test_mode=False,
+        mongo_creds: dict[str, Any] = None,
+        **kwargs,
     ):
         """
         calling the next transaction within the saga
@@ -69,13 +70,30 @@ class Saga:
             the publish methods that are from the RabbitMQ
         call_function : Callable
             a function to be called when the message recieved
-        mongo_creds : dict[str, Any]
-            the mongodb credentials to update the db
-            the keys must be `connection_str`, `db_name`, and `collection_name`
-        test_mode : bool
-            testing the function indicates that we wouldn't read or write on DB
-            default is False
+        **kwargs : 
+            test_mode : bool
+                testing the function indicates that we wouldn't read or write on DB
+                default is False
+            mongo_creds : dict[str, Any] | None
+                the mongodb credentials to update the db
+                if not `None`, the keys must be `connection_str`, `db_name`, and `collection_name`
+            saga_db_name : str
+                the saga database that data is going to be saved within it
+                default would be `Saga`
+            saga_collection_name : str
+                the saga collection that data is going to be saved within it
+                default would be `sagas`
         """
+        test_mode = kwargs.get("test_mode", False)
+        mongo_creds = kwargs.get("mongo_creds", None)
+        saga_db_name = kwargs.get("saga_db_name", "Saga")
+        saga_collection_name = kwargs.get("saga_db_name", "sagas")
+
+        if mongo_creds is None:
+            mongo_creds = load_mongo_credentials()
+            mongo_creds["db_name"] = saga_db_name
+            mongo_creds["collection_name"] = saga_collection_name
+
         tx_sorted, tx_not_started_count = self._sort_transactions(
             self.choreography.transactions
         )

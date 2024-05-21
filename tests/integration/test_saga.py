@@ -18,10 +18,10 @@ from tc_messageBroker.rabbit_mq.status import Status
 
 def test_inputs():
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
     saga_db = os.getenv("DB_SAGA_NAME")
     saga_collection = os.getenv("DB_SAGA_COLLECTION_NAME")
 
@@ -48,10 +48,10 @@ def test_saga_update():
     test updating a saga instance in db
     """
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_creds = {}
     connection_creds["connection_str"] = f"mongodb://{user}:{password}@{host}:{port}"

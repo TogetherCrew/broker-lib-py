@@ -8,12 +8,12 @@ services:
       dockerfile: Dockerfile
     environment:
       - PORT=3000
-      - DB_HOST=mongo
-      - DB_PORT=27017
-      - DB_USER=root
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+      - MONGODB_USER=root
       - DB_SAGA_NAME=Saga
       - DB_SAGA_COLLECTION_NAME=saga
-      - DB_PASSWORD=pass
+      - MONGODB_PASS=pass
       - RABBIT_HOST=rabbitmq
       - RABBIT_PORT=5672
       - RABBIT_USER=root

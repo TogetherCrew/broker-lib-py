@@ -6,10 +6,10 @@ from tc_messageBroker.rabbit_mq.db_operations.mongodb import MongoDB
 
 def test_mongo_class():
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")
@@ -26,10 +26,10 @@ def test_mongo_class():
 
 def test_credentials():
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     db_name = os.getenv("DB_SAGA_NAME")
     collection_name = os.getenv("DB_SAGA_COLLECTION_NAME")

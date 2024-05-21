@@ -9,10 +9,10 @@ from tc_messageBroker.rabbit_mq.db_operations import MongoDB
 
 def test_insert_one():
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
 
@@ -30,10 +30,10 @@ def test_insert_one():
 
 def test_insert_multiple():
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")
@@ -56,10 +56,10 @@ def test_read_count_one():
     read from db after writing using the previous function (above)
     """
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")
@@ -93,10 +93,10 @@ def test_read_count_multiple():
     read from db after writing using the previous function (above)
     """
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")
@@ -135,10 +135,10 @@ def test_replace():
     test replacing a document we just inserted
     """
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")
@@ -178,10 +178,10 @@ def test_delete():
     delete all except one of the ligitimate data which we choose
     """
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")
@@ -201,10 +201,10 @@ def test_wrong_input():
     give wrong input to insert
     """
     load_dotenv()
-    host = os.getenv("DB_HOST")
-    port = os.getenv("DB_PORT")
-    user = os.getenv("DB_USER")
-    password = os.getenv("DB_PASSWORD")
+    host = os.getenv("MONGODB_HOST")
+    port = os.getenv("MONGODB_PORT")
+    user = os.getenv("MONGODB_USER")
+    password = os.getenv("MONGODB_PASS")
 
     connection_url = f"mongodb://{user}:{password}@{host}:{port}"
     db_name = os.getenv("DB_SAGA_NAME")

@@ -11,7 +11,6 @@ services:
       - MONGODB_HOST=mongo
       - MONGODB_PORT=27017
       - MONGODB_USER=root
-      - MONGODB_PASS=pass
       - DB_SAGA_NAME=Saga
       - DB_SAGA_COLLECTION_NAME=saga
       - MONGODB_PASS=pass

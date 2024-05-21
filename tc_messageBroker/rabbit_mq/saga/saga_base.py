@@ -57,7 +57,7 @@ class Saga:
         self,
         publish_method: Callable,
         call_function: Callable,
-        mongo_creds: dict[str, Any] = None,
+        mongo_creds: dict[str, Any] | None = None,
         **kwargs,
     ):
         """

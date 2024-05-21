@@ -10,7 +10,4 @@ class TestCredentialsLoading(TestCase):
         self.assertIsNotNone(creds["password"])
         self.assertIsNotNone(creds["host"])
         self.assertIsNotNone(creds["port"])
-        self.assertNotEqual(
-            creds["connection_str"],
-            "mongodb://None:None@None:None"
-        )
+        self.assertNotEqual(creds["connection_str"], "mongodb://None:None@None:None")

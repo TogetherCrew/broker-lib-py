@@ -70,7 +70,7 @@ class Saga:
             the publish methods that are from the RabbitMQ
         call_function : Callable
             a function to be called when the message recieved
-        **kwargs : 
+        **kwargs :
             test_mode : bool
                 testing the function indicates that we wouldn't read or write on DB
                 default is False

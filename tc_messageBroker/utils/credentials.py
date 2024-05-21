@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 
+
 def load_mongo_credentials():
     """
     load mongo db credentials from .env

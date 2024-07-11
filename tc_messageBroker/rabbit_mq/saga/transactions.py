@@ -11,18 +11,18 @@ DISCORD_UPDATE_CHANNELS_TRANSACTIONS = [
         order=1,
         status=Status.NOT_STARTED,
     ),
-    ITransaction(
-        Queue.DISCORD_ANALYZER,
-        Event.DISCORD_ANALYZER.RUN,
-        order=2,
-        status=Status.NOT_STARTED,
-    ),
-    ITransaction(
-        Queue.DISCORD_BOT,
-        Event.DISCORD_BOT.SEND_MESSAGE,
-        order=3,
-        status=Status.NOT_STARTED,
-    ),
+    # ITransaction(
+    #     Queue.DISCORD_ANALYZER,
+    #     Event.DISCORD_ANALYZER.RUN,
+    #     order=2,
+    #     status=Status.NOT_STARTED,
+    # ),
+    # ITransaction(
+    #     Queue.DISCORD_BOT,
+    #     Event.DISCORD_BOT.SEND_MESSAGE,
+    #     order=3,
+    #     status=Status.NOT_STARTED,
+    # ),
     # ITransaction(
     #     Queue.DISCORD_ANALYZER,
     #     Event.DISCORD_ANALYZER.SAVE,

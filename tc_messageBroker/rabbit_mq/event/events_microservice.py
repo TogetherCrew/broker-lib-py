@@ -62,4 +62,4 @@ class TwitterAnalyzerEvent:
 
 
 class HivemindEvent:
-    QUESTION_RECIVED = "QUESTION_RECIVED"
+    QUESTION_RECEIVED = "QUESTION_RECEIVED"
